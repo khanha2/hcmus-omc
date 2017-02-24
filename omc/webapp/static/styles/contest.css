@@ -1,0 +1,23 @@
+.page-header-label {
+    margin-top: 45px;
+}
+
+@media (max-width: 1200px) {
+    .page-header-label {
+        margin-top: 10px;
+    }
+}
+
+.event-info i {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.btn-center {
+    float: none;
+    margin: 0 auto;
+}
+
+.tab-content {
+    margin-top: 15px;
+}

@@ -1,0 +1,18 @@
+<div id="tab-settings" class="tab-pane fade in active">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a data-toggle="tab" href="#tab-oveview">Thông tin chung</a></li>
+                <li><a data-toggle="tab" href="#tab-mc-test">Phần thi trắc nghiệm</a></li>
+                <li><a data-toggle="tab" href="#tab-writing-test">Phần thi tự luận</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-8">
+            <div class="tab-content">
+                {% include 'contests/settings_overview.html' %}
+                {% include 'contests/settings_mc_test.html' %}
+                {% include 'contests/settings_writing_test.html' %}
+            </div>
+        </div>
+    </div>
+</div>
