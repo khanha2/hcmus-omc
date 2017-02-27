@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% load staticfiles %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-frame">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" class="form-control" id="username" />
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" class="form-control" id="password" />
+            </div>
+            <div class="form-group" id="message-form" style="display: none">
+                <div class="text-danger" id="message"></div>
+            </div>
+            <button type="button" class="btn btn-success btn-login" id="btn-login">Đăng nhập</button>
+            <a href="#">Quên mật khẩu?</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+var loginUrl = '{% url 'users:login' %}';
+</script>
+
+<script type="text/javascript" src="{% static 'scripts/login.js' %}"></script>
+{% endblock %}

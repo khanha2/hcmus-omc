@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -25,7 +26,7 @@ SECRET_KEY = '@kqw3t!o*6ygos^uiq34-3ayp@f*hr*6yaiqleuqt5_82b**+e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webapp',
+    'common',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -76,8 +79,14 @@ WSGI_APPLICATION = 'omc.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'omc',
+        'USER': 'root',
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': 'localhost',
+        'PORT': '3306',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -108,14 +117,52 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Authentication
+# LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
+AUTH_USER_MODEL = 'users.User'
+
+# Datetime format
+DATE_INPUT_FORMATS = (
+    '%d/%m/%Y',
+    '%d-%m-%Y',
+    '%d/%m/%y',
+)
+
+DATETIME_INPUT_FORMATS = (
+    '%d-%m-%Y %H:%M:%S',
+    '%d-%m-%Y %H:%M:%S.%f',
+    '%d-%m-%Y %H:%M',
+    '%d-%m-%Y',
+    '%d/%m/%Y %H:%M:%S',
+    '%d/%m/%Y %H:%M:%S.%f',
+    '%d/%m/%Y %H:%M',
+    '%d/%m/%Y',
+    '%d/%m/%y %H:%M:%S',
+    '%d/%m/%y %H:%M:%S.%f',
+    '%d/%m/%y %H:%M',
+    '%d/%m/%y',
+)
+
+DATE_FORMAT = 'd/m/Y'
+
+DATETIME_FORMAT = 'd/m/Y - H:i'
+
+# Mailbox information
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_PORT = os.environ.get('EMAIL_PORT', '')

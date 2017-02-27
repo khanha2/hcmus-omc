@@ -1,0 +1,10 @@
+.login-frame {
+    margin: 0 auto;
+    margin-top: 50px;
+    max-width: 340px;
+}
+
+.btn-login {
+    width: 100%;
+    margin-bottom: 15px
+}

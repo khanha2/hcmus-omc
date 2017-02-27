@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth import logout as user_logout
+from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, reverse
 
 # Create your views here.
 
@@ -6,6 +9,18 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'index.html', {})
 
+
+def login(request):
+    if request.user.id:
+        if 'next' in request.GET:
+            return HttpResponseRedirect(request.GET['next'])
+        return HttpResponseRedirect(reverse('webapp:index'))
+    return render(request, 'login.html', {})
+
+@login_required
+def logout(request):
+    user_logout(request)
+    return HttpResponseRedirect(reverse('webapp:index'))
 
 def contest_overview(request):
     return render(request, 'contest/overview.html', {})
