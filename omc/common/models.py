@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
+from auditlog.models import AuditlogHistoryField
 # Create your models here.
 
 
@@ -10,6 +11,8 @@ class BaseModel(models.Model):
     is_deleted = models.BooleanField(default=False)
     created_date = models.DateTimeField(default=timezone.now)
     deleted_date = models.DateTimeField(null=True, blank=True, default=None)
+
+    history = AuditlogHistoryField()
 
     class Meta:
         abstract = True

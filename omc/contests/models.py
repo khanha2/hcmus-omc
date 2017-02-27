@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from auditlog.registry import auditlog
+
 from common.models import BaseModel
 from users.models import User
 # Create your models here.
@@ -27,3 +29,7 @@ class ContestManager(BaseModel):
 
     def __unicode__(self):
         return '%s - %s' % (str(self.contest), str(self.user))
+
+
+auditlog.register(Contest)
+auditlog.register(ContestManager)
