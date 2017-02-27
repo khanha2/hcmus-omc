@@ -1,15 +1,18 @@
+import json
+
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from contests.models import Contest, ContestManager
-
+from contests import service
 # Create your views here.
 
 
 def contests(request):
-    pass
+    return HttpResponse(json.dumps(service.contests()), content_type='application/json')
 
 
-def create_contest(request):
+def create(request):
     pass
 
 

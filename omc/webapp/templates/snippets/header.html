@@ -12,7 +12,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                 {% if user.is_superuser or user.can_create_contest %}
-                <li><a href="#">Quản lý</a></li>
+                <li><a href="{% url 'webapp:contests' %}">Quản lý</a></li>
                 {% endif %}
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user }} <span class="caret"></span></a>

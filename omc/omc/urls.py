@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('webapp.urls', namespace='webapp')),
     url(r'^api/users/', include('users.urls', namespace='users')),
+    url(r'^api/contests/', include('contests.urls', namespace='contests')),
 ]

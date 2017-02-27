@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Quản lý các cuộc thi</h1>
+        <div class="form-group">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-create-contest"><i class="glyphicon glyphicon-plus"></i></button>
+        </div>
+        <ul class="list-group" id="contests">
+        </ul>
+    </div>
+</div>
+{% include 'contests/modal_create_contest.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+var contestsApiUrl = '{% url 'contests:contests' %}';
+var contestUrl = '{% url 'webapp:contest_overview' %}';
+var createApiUrl = '';
+</script>
+
+<script type="text/javascript" src="{% static 'scripts/contests-management.js' %}"></script>
+{% endblock %}

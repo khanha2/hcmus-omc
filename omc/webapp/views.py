@@ -17,33 +17,38 @@ def login(request):
         return HttpResponseRedirect(reverse('webapp:index'))
     return render(request, 'login.html', {})
 
+
 @login_required
 def logout(request):
     user_logout(request)
     return HttpResponseRedirect(reverse('webapp:index'))
 
+
 def contest_overview(request):
-    return render(request, 'contest/overview.html', {})
+    return render(request, 'contests/overview.html', {})
 
 
 def contest_mc_test(request):
-    return render(request, 'contest/mc_test.html', {})
+    return render(request, 'contests/mc_test.html', {})
 
 
 def contest_writing_test(request):
-    return render(request, 'contest/writing_test.html', {})
+    return render(request, 'contests/writing_test.html', {})
 
 
 def contest_admin(request):
-    return render(request, 'contest/admin.html', {})
+    return render(request, 'contests/admin.html', {})
 
 
 def contest_settings(request):
-    return render(request, 'contest/settings.html', {})
+    return render(request, 'contests/settings.html', {})
 
 
-def contests_management(request):
-    return render(request, 'contests_management.html', {})
+@login_required
+def contests(request):
+    if not request.user.is_superuser and not request.user.can_create_contest:
+        raise Http404
+    return render(request, 'contests/contests.html', {})
 
 
 def user(request):
