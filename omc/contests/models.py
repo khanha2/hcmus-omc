@@ -30,6 +30,8 @@ class ContestManager(BaseModel):
     def __unicode__(self):
         return '%s - %s' % (str(self.contest), str(self.user))
 
+# class Contestant(BaseModel):
+#     pass
 
 auditlog.register(Contest)
 auditlog.register(ContestManager)

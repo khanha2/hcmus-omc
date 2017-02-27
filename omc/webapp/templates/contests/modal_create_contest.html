@@ -4,13 +4,29 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Tạo cuộc thi</h4>
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <div class="form-group">
+                    <label>Tên cuộc thi</label>
+                    <input type="text" class="form-control" id="contest-name">
+                </div>
+                <div class="form-group">
+                    <label>Thời gian</label>
+                    <div class="form-inline">
+                        <div class="input-group date" id="contest-from-time">
+                            <input type="text" class="form-control" placeholder="Từ" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <div class="input-group date" id="contest-to-time">
+                            <input type="text" class="form-control" placeholder="Đến" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btn-create">Tạo cuộc thi</button>
             </div>
         </div>
     </div>

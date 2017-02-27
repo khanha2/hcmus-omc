@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-lg-12">
@@ -17,10 +21,13 @@
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js"></script>
+
 <script type="text/javascript">
 var contestsApiUrl = '{% url 'contests:contests' %}';
 var contestUrl = '{% url 'webapp:contest_overview' %}';
-var createApiUrl = '';
+var createApiUrl = '{% url 'contests:create' %}';
 </script>
 
 <script type="text/javascript" src="{% static 'scripts/contests-management.js' %}"></script>
