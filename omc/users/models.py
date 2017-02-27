@@ -35,7 +35,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(
         max_length=50, null=True, blank=True, default=None)
     email = models.EmailField(null=True, blank=True, default=None)
-
+    can_create_contest = models.BooleanField(default=False)
+    
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
