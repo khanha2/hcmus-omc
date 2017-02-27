@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^contest/writing-test/$', views.contest_writing_test, name='contest_writing_test'),
     url(r'^contest/admin/$', views.contest_admin, name='contest_admin'),
     url(r'^user/$', views.user, name='user'),
+    url(r'^contests/$', views.contests_management, name='contests_management'),
 ]

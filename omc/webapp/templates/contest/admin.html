@@ -1,4 +1,4 @@
-{% extends 'contests/layout.html' %}
+{% extends 'contest/layout.html' %}
 
 {% load staticfiles %}
 
@@ -16,8 +16,8 @@
             <li><a data-toggle="tab" href="#tab-contestants">Danh sách tham gia</a></li>
         </ul>
         <div class="tab-content">
-            {% include 'contests/admin_tab_settings.html' %}
-            {% include 'contests/admin_tab_contestants.html' %}
+            {% include 'contest/admin_tab_settings.html' %}
+            {% include 'contest/admin_tab_contestants.html' %}
         </div>
     </div>
 </div>

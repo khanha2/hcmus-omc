@@ -8,24 +8,28 @@ def index(request):
 
 
 def contest_overview(request):
-    return render(request, 'contests/overview.html', {})
+    return render(request, 'contest/overview.html', {})
 
 
 def contest_mc_test(request):
-    return render(request, 'contests/mc_test.html', {})
+    return render(request, 'contest/mc_test.html', {})
 
 
 def contest_writing_test(request):
-    return render(request, 'contests/writing_test.html', {})
+    return render(request, 'contest/writing_test.html', {})
 
 
 def contest_admin(request):
-    return render(request, 'contests/admin.html', {})
+    return render(request, 'contest/admin.html', {})
 
 
 def contest_settings(request):
-    return render(request, 'contests/settings.html', {})
+    return render(request, 'contest/settings.html', {})
+
+
+def contests_management(request):
+    return render(request, 'contests_management.html', {})
 
 
 def user(request):
-	return render(request, 'users/user.html', {})
+    return render(request, 'users/user.html', {})
