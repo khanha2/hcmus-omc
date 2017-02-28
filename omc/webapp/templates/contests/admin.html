@@ -16,8 +16,8 @@
             <li><a data-toggle="tab" href="#tab-contestants">Danh sách tham gia</a></li>
         </ul>
         <div class="tab-content">
-            {% include 'contest/admin_tab_settings.html' %}
-            {% include 'contest/admin_tab_contestants.html' %}
+            {% include 'contests/admin_tab_settings.html' %}
+            {% include 'contests/admin_tab_contestants.html' %}
         </div>
     </div>
 </div>
@@ -27,6 +27,11 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.min.js"></script>
+
+<script type="text/javascript">
+var contestId = {{ contest.id }};
+var updateOverviewUrl ='{% url 'contests:update' %}';
+</script>
 
 <script type="text/javascript" src="{%  static 'scripts/contest-settings.js' %}"></script>
 {% endblock %}

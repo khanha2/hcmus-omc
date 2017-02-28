@@ -19,6 +19,16 @@ class Contest(BaseModel):
     def __unicode__(self):
         return '%s' % (self.name)
 
+    @staticmethod
+    def get_field_list():
+        return [
+            'name',
+            'from_time',
+            'to_time',
+            'short_description',
+            'description'
+        ]
+
 
 class ContestManager(BaseModel):
     contest = models.ForeignKey(Contest)

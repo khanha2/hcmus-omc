@@ -161,7 +161,7 @@ DATETIME_INPUT_FORMATS = (
 
 DATE_FORMAT = 'd/m/Y'
 
-DATETIME_FORMAT = 'd/m/Y - H:i'
+DATETIME_FORMAT = 'd/m/Y H:i'
 
 # Mailbox information
 EMAIL_USE_TLS = True

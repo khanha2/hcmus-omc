@@ -1,8 +1,11 @@
 from django.contrib.auth import logout as user_logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, reverse
+from django.shortcuts import get_object_or_404, render, reverse
 
+from contests.models import Contest
+from contests import service
 # Create your views here.
 
 
@@ -36,12 +39,16 @@ def contest_writing_test(request):
     return render(request, 'contests/writing_test.html', {})
 
 
+@login_required
 def contest_admin(request):
-    return render(request, 'contests/admin.html', {})
-
-
-def contest_settings(request):
-    return render(request, 'contests/settings.html', {})
+    if not request.user.is_superuser and not request.user.can_create_contest:
+        raise Http404
+    if not 'id' in request.GET:
+        raise Http404
+    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    if not service.check_contest_permission(contest, request.user):
+        raise PermissionDenied
+    return render(request, 'contests/admin.html', {'contest': contest})
 
 
 @login_required
@@ -51,5 +58,6 @@ def contests(request):
     return render(request, 'contests/contests.html', {})
 
 
+@login_required
 def user(request):
     return render(request, 'users/user.html', {})

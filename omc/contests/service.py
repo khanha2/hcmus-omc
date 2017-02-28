@@ -22,3 +22,10 @@ def contests(search_criteria=None):
                 'time_string'] = '%s - %s' % (str(c.from_time), str(c.to_time))
         result.append(contest_dict)
     return result
+
+
+def check_contest_permission(contest, user):
+    managers = ContestManager.objects.filter(contest=contest, user=user)
+    if managers.count() == 0:
+        return False
+    return True
