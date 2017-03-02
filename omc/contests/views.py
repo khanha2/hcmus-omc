@@ -63,8 +63,8 @@ def update(request):
                 try:
                     if f == 'from_time' or f == 'to_time':
                         update_time(contest, f, request.POST[f])
-                    if f == 'use_mc_test':
-                        contest.use_mc_test = request.POST[f] == 'true'
+                    if f == 'use_mc_test' or f == 'use_writing_test':
+                        setattr(contest, f, request.POST[f] == 'true')
                     else:
                         setattr(contest, f, request.POST[f])
                 except:
@@ -72,6 +72,16 @@ def update(request):
         contest.save()
         result['success'] = True
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+@login_required
+def upload_mc_test_questions(request):
+    pass
+
+
+@login_required
+def upload_writing_test_questions(request):
+    pass
 
 
 def delete_contest(request):

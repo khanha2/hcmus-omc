@@ -37,7 +37,8 @@ class Contest(BaseModel):
             'use_mc_test',
             'mc_test_time',
             'mc_test_questions',
-            'use_writing_test'
+            'use_writing_test',
+            'writing_test_time'
         ]
 
 
