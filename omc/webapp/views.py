@@ -41,13 +41,7 @@ def contest_writing_test(request):
 
 @login_required
 def contest_admin(request):
-    if not request.user.is_superuser and not request.user.can_create_contest:
-        raise Http404
-    if not 'id' in request.GET:
-        raise Http404
-    contest = get_object_or_404(Contest, pk=request.GET['id'])
-    if not service.check_contest_permission(contest, request.user):
-        raise PermissionDenied
+    contest = service.get_contest_from_request(request)
     return render(request, 'contests/admin.html', {'contest': contest})
 
 

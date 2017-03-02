@@ -1,12 +1,16 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 
+import django_excel as excel
+import pyexcel.ext.xls
+import pyexcel.ext.xlsx
+
+from common.forms import UploadFileForm
 from common.utilities import convert_string_to_time
-from contests.models import Contest, ContestManager
+from contests.models import Contest, ContestManager, MCTestQuestion
 from contests import service
 # Create your views here.
 
@@ -50,13 +54,7 @@ def update_time(contest, field, time_str):
 @login_required
 def update(request):
     result = {'success': False}
-    if not request.user.is_superuser and not request.user.can_create_contest:
-        raise PermissionDenied
-    if not 'id' in request.GET:
-        raise Http404
-    contest = get_object_or_404(Contest, pk=request.GET['id'])
-    if not service.check_contest_permission(contest, request.user):
-        raise PermissionDenied
+    contest = service.get_contest_from_request(request)
     if request.method == 'POST':
         for f in Contest.get_field_list():
             if f in request.POST:
@@ -75,8 +73,29 @@ def update(request):
 
 
 @login_required
-def upload_mc_test_questions(request):
-    pass
+def upload_questions(request):
+    contest = service.get_contest_from_request(request)
+    form = UploadFileForm(request.POST, request.FILES)
+    if form.is_valid():
+        if request.POST['type'] == 'mc':
+
+            MCTestQuestion.objects.filter(contest=contest).delete()
+            # request.FILES['file'].save_book_to_database(
+            # models=[(MCTestQuestion, ['content', 'a', 'b', 'c', 'd',
+            # 'answer'], mc_func, 0)])
+
+            sheet = request.FILES['file'].get_sheet().get_array()
+            print type(sheet)
+            for row in sheet[1:]:
+                print row
+                question = MCTestQuestion(contest=contest, content=row[0], a=row[
+                                          1], b=row[2], c=row[3], d=row[4], answer=row[5])
+                question.save()
+
+            # return excel.make_response(request.FILES['file'].get_sheet(),
+            # "csv", file_name="download")
+    result = {'success': True}
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
 
 @login_required
@@ -84,5 +103,6 @@ def upload_writing_test_questions(request):
     pass
 
 
+@login_required
 def delete_contest(request):
     pass

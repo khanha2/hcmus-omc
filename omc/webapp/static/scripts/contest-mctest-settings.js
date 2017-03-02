@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    var mctestQuestionsFiles;
+
     function updateMCSettings() {
         $.ajax({
             url: updateUrl + '?id=' + contestId,
@@ -18,6 +20,34 @@ $(document).ready(function() {
             }
         });
     }
+
+    function loadMCQuestions() {
+
+    }
+
+    function uploadMCQuestions() {
+        var data = new FormData($('#form-upload-mctest-questions').get(0));
+        $.ajax({
+            url: uploadQuestionsUrl + '?id=' + contestId,
+            type: 'POST',
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadMCQuestions();
+            }
+        });
+    }
+
+    $('#file-mctest-questions').on('change', function(e) {
+        mctestQuestionsFiles = e.target.files;
+    });
+
+    $('#btn-update-mc-questions').on('click', function(e) {
+        e.preventDefault();
+        uploadMCQuestions();
+    });
 
     $('#btn-update-mctest').on('click', function(e) {
         e.preventDefault();

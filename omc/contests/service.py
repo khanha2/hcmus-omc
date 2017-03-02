@@ -1,6 +1,8 @@
-from contests.models import Contest, ContestManager
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 
 from common.utilities import get_paginated_list
+from contests.models import Contest, ContestManager
 
 
 def contests(search_criteria=None):
@@ -24,8 +26,15 @@ def contests(search_criteria=None):
     return result
 
 
-def check_contest_permission(contest, user):
-    managers = ContestManager.objects.filter(contest=contest, user=user)
-    if managers.count() == 0:
-        return False
-    return True
+def get_contest_from_request(request):
+    if not request.user.is_superuser and not request.user.can_create_contest:
+        raise PermissionDenied
+    if not 'id' in request.GET:
+        raise Http404
+    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    if not request.user.is_superuser:
+        managers = ContestManager.objects.filter(
+            contest=contest, user=request.user)
+        if managers.count() == 0:
+            raise PermissionDenied
+    return contest

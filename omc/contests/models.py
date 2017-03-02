@@ -22,7 +22,7 @@ class Contest(BaseModel):
 
     use_writing_test = models.BooleanField(default=False)
     writing_test_time = models.PositiveIntegerField(default=0)
-    
+
     def __unicode__(self):
         return '%s' % (self.name)
 
@@ -42,18 +42,56 @@ class Contest(BaseModel):
         ]
 
 
-class ContestManager(BaseModel):
+class ContestUserMixin(BaseModel):
     contest = models.ForeignKey(Contest)
     user = models.ForeignKey(User)
 
     class Meta:
+        abstract = True
         unique_together = ('contest', 'user')
 
     def __unicode__(self):
         return '%s - %s' % (str(self.contest), str(self.user))
 
-# class Contestant(BaseModel):
-#     pass
+    def delete(self):
+        self.is_deleted = True
+        super(ContestUserMixin, self).delete()
+
+
+class ContestManager(ContestUserMixin):
+    pass
+
+
+class Contestant(ContestUserMixin):
+    pass
+
+
+class Question(models.Model):
+    contest = models.ForeignKey(Contest)
+    content = models.TextField(default='')
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        short_cont = self.content if len(
+            self.content) <= 30 else self.content[:-30]
+        return '%s - %s' % (str(self.contest), short_cont)
+
+
+class MCTestQuestion(Question):
+    contest = models.ForeignKey(Contest)
+    content = models.TextField(default='')
+    a = models.TextField(null=True, default=None)
+    b = models.TextField(null=True, default=None)
+    c = models.TextField(null=True, default=None)
+    d = models.TextField(null=True, default=None)
+    answer = models.CharField(max_length=2, null=True, default=None)
+
+
+class WritingTestQuestion(Question):
+    pass
 
 auditlog.register(Contest)
 auditlog.register(ContestManager)
+auditlog.register(Contestant)

@@ -1,0 +1,23 @@
+<div id="modal-upload-mctest-questions" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cập nhật danh sách câu hỏi trắc nghiệm</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-upload-mctest-questions">
+                    <input type="hidden" name="type" value="mc"> {% csrf_token %}
+                    <div class="form-group">
+                        <label>Tên cuộc thi</label>
+                        <input type="file" class="form-control" id="file-mctest-questions" name="file">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btn-update-mc-questions">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

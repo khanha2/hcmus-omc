@@ -32,6 +32,9 @@
     </div>
     <hr>
     <h4>Danh sách câu hỏi</h4>
+    <div class="form-group">
+        <button class="btn btn-default" title="Cập nhật danh sách câu hỏi" data-toggle="modal" data-target="#modal-upload-mctest-questions"><i class="glyphicon glyphicon-upload"></i></button>
+    </div>
     <div class="panel-group" id="questions">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -91,3 +94,4 @@
         </div>
     </div>
 </div>
+{% include 'contests/modal_upload_mc_questions.html' %}
