@@ -1,6 +1,15 @@
 $(document).ready(function() {
     var mctestQuestionsFiles;
 
+    function alertSuccess() {
+        $('#mctest-alert-frame').html('<div class="custom-alerts alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin thành công</div>');
+    }
+
+    function alertDanger() {
+        $('#mctest-alert-frame').html('<div class="custom-alerts alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin không thành công</div>');
+
+    }
+
     function updateMCSettings() {
         $.ajax({
             url: updateUrl + '?id=' + contestId,
@@ -13,16 +22,37 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    $('#mctest-alert-frame').html('<div class="custom-alerts alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin thành công</div>');
+                    alertSuccess();
                 } else {
-                    $('#mctest-alert-frame').html('<div class="custom-alerts alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin không thành công</div>');
+                    alertDanger();
                 }
+            },
+            error: function(response, error) {
+                alertDanger();
             }
         });
     }
 
     function loadMCQuestions() {
+        function addMCQuestion(element) {
+            var row = '<div class="panel panel-default"><div class="panel-body"><p>' + element.content + '</p><ol type="A"><li>' + element.a + '</li><li>' + element.b + '</li><li>' + element.c + '</li><li>' + element.d + '</li></ol></div></div>';
+            $('#mc-questions').append(row);
+        }
 
+        $.ajax({
+            url: questionsUrl,
+            type: 'GET',
+            data: {
+                id: contestId,
+                type: 'mc'
+            },
+            success: function(response) {
+                $('#mc-questions').empty();
+                $(response).each(function(index, element) {
+                    addMCQuestion(element);
+                });
+            }
+        });
     }
 
     function uploadMCQuestions() {
@@ -35,7 +65,15 @@ $(document).ready(function() {
             processData: false,
             contentType: false,
             success: function(response) {
-                loadMCQuestions();
+                if (response.success) {
+                    alertSuccess();
+                    loadMCQuestions();
+                } else {
+                    alertDanger();
+                }
+            },
+            error: function(response, error) {
+                alertDanger();
             }
         });
     }
@@ -53,4 +91,6 @@ $(document).ready(function() {
         e.preventDefault();
         updateMCSettings();
     });
+
+    loadMCQuestions();
 });

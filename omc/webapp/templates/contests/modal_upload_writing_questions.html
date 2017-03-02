@@ -1,4 +1,4 @@
-<div id="modal-upload-mctest-questions" class="modal fade" role="dialog">
+<div id="modal-upload-writingtest-questions" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -7,16 +7,16 @@
                 <h4 class="modal-title">Cập nhật danh sách câu hỏi trắc nghiệm</h4>
             </div>
             <div class="modal-body">
-                <form id="form-upload-mctest-questions">
-                    <input type="hidden" name="type" value="mc"> {% csrf_token %}
+                <form id="form-upload-writingtest-questions">
+                    <input type="hidden" name="type" value="wt"> {% csrf_token %}
                     <div class="form-group">
                         <label>Tên cuộc thi</label>
-                        <input type="file" class="form-control-static" id="file-mctest-questions" name="file">
+                        <input type="file" class="form-control-static" id="file-writingtest-questions" name="file">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" id="btn-update-mc-questions">Cập nhật</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btn-update-writing-questions">Cập nhật</button>
             </div>
         </div>
     </div>

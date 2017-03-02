@@ -10,7 +10,7 @@ import pyexcel.ext.xlsx
 
 from common.forms import UploadFileForm
 from common.utilities import convert_string_to_time
-from contests.models import Contest, ContestManager, MCTestQuestion
+from contests.models import Contest, ContestManager, MCTestQuestion, WritingTestQuestion
 from contests import service
 # Create your views here.
 
@@ -78,22 +78,18 @@ def upload_questions(request):
     form = UploadFileForm(request.POST, request.FILES)
     if form.is_valid():
         if request.POST['type'] == 'mc':
-
             MCTestQuestion.objects.filter(contest=contest).delete()
-            # request.FILES['file'].save_book_to_database(
-            # models=[(MCTestQuestion, ['content', 'a', 'b', 'c', 'd',
-            # 'answer'], mc_func, 0)])
-
             sheet = request.FILES['file'].get_sheet().get_array()
-            print type(sheet)
             for row in sheet[1:]:
-                print row
                 question = MCTestQuestion(contest=contest, content=row[0], a=row[
                                           1], b=row[2], c=row[3], d=row[4], answer=row[5])
                 question.save()
-
-            # return excel.make_response(request.FILES['file'].get_sheet(),
-            # "csv", file_name="download")
+        elif request.POST['type'] == 'wt':
+            WritingTestQuestion.objects.filter(contest=contest).delete()
+            sheet = request.FILES['file'].get_sheet().get_array()
+            for row in sheet[1:]:
+                question = WritingTestQuestion(contest=contest, content=row[0])
+                question.save()
     result = {'success': True}
     return HttpResponse(json.dumps(result), content_type='application/json')
 
@@ -106,3 +102,26 @@ def upload_writing_test_questions(request):
 @login_required
 def delete_contest(request):
     pass
+
+
+@login_required
+def questions(request):
+    contest = service.get_contest_from_request(request)
+    result = []
+    if 'type' in request.GET:
+        if request.GET['type'] == 'mc':
+            questions = MCTestQuestion.objects.filter(contest=contest)
+            for q in questions:
+                result.append({'id': q.id,
+                               'content': q.content,
+                               'a': q.a,
+                               'b': q.b,
+                               'c': q.c,
+                               'd': q.d,
+                               'answer': q.answer})
+        elif request.GET['type'] == 'wt':
+            questions = WritingTestQuestion.objects.filter(contest=contest)
+            for q in questions:
+                result.append({'id': q.id,
+                               'content': q.content})
+    return HttpResponse(json.dumps(result), content_type='application/json')
