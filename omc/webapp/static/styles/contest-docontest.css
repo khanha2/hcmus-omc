@@ -39,3 +39,9 @@
 .contest-content textarea {
     resize: vertical;
 }
+
+.tabs-group {
+    background: #fff;
+    border: 1px solid #dae2ea;
+    padding-top: 5px;
+}

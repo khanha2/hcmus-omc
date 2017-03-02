@@ -28,11 +28,28 @@ def logout(request):
 
 
 def contest_overview(request):
-    return render(request, 'contests/overview.html', {})
+    if not 'id' in request.GET:
+        raise Http404
+    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    if not contest.from_time or not contest.to_time:
+        contest.time_string = None
+    else:
+        contest.time_string = '%s - %s' % (str(contest.from_time),
+                                           str(contest.to_time))
+    template_data = {'contest': contest,
+                     'can_participate': service.can_participate_contest(contest),
+                     'can_manage': service. can_manage_contest(contest, request.user)}
+    if request.user.id:
+        template_data['remaining'] = service.remaining_matches(
+            contest, request.user)
+    return render(request, 'contests/overview.html', template_data)
 
 
 def contest_mc_test(request):
-    return render(request, 'contests/mc_test.html', {})
+    if not 'id' in request.GET:
+        raise Http404
+    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    return render(request, 'contests/mc_test.html', {'contest': contest})
 
 
 def contest_writing_test(request):

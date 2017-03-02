@@ -95,11 +95,6 @@ def upload_questions(request):
 
 
 @login_required
-def upload_writing_test_questions(request):
-    pass
-
-
-@login_required
 def delete_contest(request):
     pass
 
@@ -125,3 +120,8 @@ def questions(request):
                 result.append({'id': q.id,
                                'content': q.content})
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+@login_required
+def contestants(request):
+    pass

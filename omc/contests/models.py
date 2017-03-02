@@ -23,6 +23,8 @@ class Contest(BaseModel):
     use_writing_test = models.BooleanField(default=False)
     writing_test_time = models.PositiveIntegerField(default=0)
 
+    maximum_of_matches = models.PositiveIntegerField(default=0)
+
     def __unicode__(self):
         return '%s' % (self.name)
 
@@ -92,6 +94,39 @@ class MCTestQuestion(Question):
 class WritingTestQuestion(Question):
     pass
 
+
+class Match(BaseModel):
+    contestant = models.ForeignKey(Contestant)
+    match_id = models.PositiveSmallIntegerField()
+
+    writing_test_questions = models.TextField(
+        null=True, blank=True, default='[]')
+    writing_test_responses = models.TextField(
+        null=True, blank=True, default='{}')
+    writing_test_start_time = models.DateTimeField(
+        null=True, blank=True, default=None)
+    writing_test_end_time = models.DateTimeField(
+        null=True, blank=True, default=None)
+
+    mc_test_questions = models.TextField(null=True, blank=True, default='[]')
+    mc_test_responses = models.TextField(null=True, blank=True, default='{}')
+    mc_test_passed_responses = models.PositiveIntegerField(default=0)
+    mc_test_start_time = models.DateTimeField(
+        null=True, blank=True, default=None)
+    mc_test_end_time = models.DateTimeField(
+        null=True, blank=True, default=None)
+
+    class Meta:
+        unique_together = ('contestant', 'match_id')
+
+    def save(self, *args, **kwargs):
+        super(Match, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return '%s' % str(self.contestant)
+
+
 auditlog.register(Contest)
 auditlog.register(ContestManager)
 auditlog.register(Contestant)
+auditlog.register(Match)

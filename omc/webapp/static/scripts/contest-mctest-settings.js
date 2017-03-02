@@ -34,8 +34,8 @@ $(document).ready(function() {
     }
 
     function loadMCQuestions() {
-        function addMCQuestion(element) {
-            var row = '<div class="panel panel-default"><div class="panel-body"><p>' + element.content + '</p><ol type="A"><li>' + element.a + '</li><li>' + element.b + '</li><li>' + element.c + '</li><li>' + element.d + '</li></ol></div></div>';
+        function addMCQuestion(index, element) {
+            var row = '<div class="panel panel-default"><div class="panel-body"><strong>Câu hỏi ' + (index + 1) + ':</strong><p>' + element.content + '</p><ol type="A"><li>' + element.a + '</li><li>' + element.b + '</li><li>' + element.c + '</li><li>' + element.d + '</li></ol>Đáp án: <strong>' + element.answer + '</strong></div></div>';
             $('#mc-questions').append(row);
         }
 
@@ -49,7 +49,7 @@ $(document).ready(function() {
             success: function(response) {
                 $('#mc-questions').empty();
                 $(response).each(function(index, element) {
-                    addMCQuestion(element);
+                    addMCQuestion(index, element);
                 });
             }
         });

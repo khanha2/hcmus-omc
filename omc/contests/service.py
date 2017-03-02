@@ -1,8 +1,9 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 
 from common.utilities import get_paginated_list
-from contests.models import Contest, ContestManager
+from contests.models import Contest, ContestManager, Contestant, Match
 
 
 def contests(search_criteria=None):
@@ -33,8 +34,29 @@ def get_contest_from_request(request):
         raise Http404
     contest = get_object_or_404(Contest, pk=request.GET['id'])
     if not request.user.is_superuser:
-        managers = ContestManager.objects.filter(
-            contest=contest, user=request.user)
-        if managers.count() == 0:
+        if not can_manage_contest(contest, request.user):
             raise PermissionDenied
     return contest
+
+
+def can_participate_contest(contest):
+    now = timezone.now()
+    if not contest.from_time or not contest.to_time:
+        return False
+    if now < contest.from_time or now > contest.to_time:
+        return False
+    return True
+
+
+def can_manage_contest(contest, user):
+    managers = ContestManager.objects.filter(contest=contest, user=user)
+    return managers.count() > 0
+
+
+def remaining_matches(contest, user):
+    contestant = Contestant.objects.filter(contest=contest, user=user)
+    if contestant.count() == 0:
+        return contest.maximum_of_matches
+    remaining_matches = contest.maximum_of_matches - \
+        Match.objects.filter(contestant=contestant).count()
+    return remaining_matches if remaining_matches > 0 else 0

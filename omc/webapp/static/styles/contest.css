@@ -21,3 +21,7 @@
 .tab-content {
     margin-top: 15px;
 }
+
+h1 a:hover {
+    text-decoration: none;
+}
