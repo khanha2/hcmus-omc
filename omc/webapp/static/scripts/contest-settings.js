@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     function updateOverviewInfo() {
         $.ajax({
-            url: updateOverviewUrl + '?id=' + contestId,
+            url: updateUrl + '?id=' + contestId,
             type: 'POST',
             data: {
                 name: $('#contest-name').val(),
@@ -21,9 +21,9 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    $('#alert-frame').html('<div class="custom-alerts alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin thành công</div>');
+                    $('#overview-alert-frame').html('<div class="custom-alerts alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin thành công</div>');
                 } else {
-                    $('#alert-frame').html('<div class="custom-alerts alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin không thành công</div>');
+                    $('#overview-alert-frame').html('<div class="custom-alerts alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>Cập nhật thông tin không thành công</div>');
                 }
             }
         });

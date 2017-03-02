@@ -63,8 +63,10 @@ def update(request):
                 try:
                     if f == 'from_time' or f == 'to_time':
                         update_time(contest, f, request.POST[f])
+                    if f == 'use_mc_test':
+                        contest.use_mc_test = request.POST[f] == 'true'
                     else:
-                        setattr(activity_obj, f, request.POST[f])
+                        setattr(contest, f, request.POST[f])
                 except:
                     pass
         contest.save()

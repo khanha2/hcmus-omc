@@ -16,6 +16,13 @@ class Contest(BaseModel):
     short_description = models.TextField(null=True, blank=True, default=None)
     description = models.TextField(null=True, blank=True, default=None)
 
+    use_mc_test = models.BooleanField(default=False)
+    mc_test_time = models.PositiveIntegerField(default=0)
+    mc_test_questions = models.PositiveIntegerField(default=0)
+
+    use_writing_test = models.BooleanField(default=False)
+    writing_test_time = models.PositiveIntegerField(default=0)
+    
     def __unicode__(self):
         return '%s' % (self.name)
 
@@ -26,7 +33,11 @@ class Contest(BaseModel):
             'from_time',
             'to_time',
             'short_description',
-            'description'
+            'description',
+            'use_mc_test',
+            'mc_test_time',
+            'mc_test_questions',
+            'use_writing_test'
         ]
 
 
