@@ -47,5 +47,5 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __unicode__(self):
         if not self.first_name or not self.last_name:
-            return self.username
+            return '%' % (self.username)
         return '%s %s' % (self.last_name, self.first_name)
