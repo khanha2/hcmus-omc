@@ -10,7 +10,7 @@ import pyexcel.ext.xlsx
 
 from common.forms import UploadFileForm
 from common.utilities import convert_string_to_time
-from contests.models import Contest, ContestManager, MCTestQuestion, WritingTestQuestion
+from contests.models import Contest, ContestManager, MCQuestion, WritingQuestion
 from contests import service
 # Create your views here.
 
@@ -48,7 +48,7 @@ def create(request):
 
 def update_time(contest, field, time_str):
     time = convert_string_to_time(time_str)
-    setattr(contest, field, time)
+    setattr(contest, field, str(time))
 
 
 @login_required
@@ -61,7 +61,7 @@ def update(request):
                 try:
                     if f == 'from_time' or f == 'to_time':
                         update_time(contest, f, request.POST[f])
-                    if f == 'use_mc_test' or f == 'use_writing_test':
+                    elif f == 'use_mc_test' or f == 'use_writing_test':
                         setattr(contest, f, request.POST[f] == 'true')
                     else:
                         setattr(contest, f, request.POST[f])
@@ -78,17 +78,20 @@ def upload_questions(request):
     form = UploadFileForm(request.POST, request.FILES)
     if form.is_valid():
         if request.POST['type'] == 'mc':
-            MCTestQuestion.objects.filter(contest=contest).delete()
+            MCQuestion.objects.filter(contest=contest).delete()
             sheet = request.FILES['file'].get_sheet().get_array()
             for row in sheet[1:]:
-                question = MCTestQuestion(contest=contest, content=row[0], a=row[
-                                          1], b=row[2], c=row[3], d=row[4], answer=row[5])
+                question = MCQuestion(contest=contest)
+                i = 0
+                for f in MCQuestion.get_field_list():
+                    setattr(question, f, row[i])
+                    i += 1
                 question.save()
         elif request.POST['type'] == 'wt':
-            WritingTestQuestion.objects.filter(contest=contest).delete()
+            WritingQuestion.objects.filter(contest=contest).delete()
             sheet = request.FILES['file'].get_sheet().get_array()
             for row in sheet[1:]:
-                question = WritingTestQuestion(contest=contest, content=row[0])
+                question = WritingQuestion(contest=contest, content=row[0])
                 question.save()
     result = {'success': True}
     return HttpResponse(json.dumps(result), content_type='application/json')
@@ -105,7 +108,7 @@ def questions(request):
     result = []
     if 'type' in request.GET:
         if request.GET['type'] == 'mc':
-            questions = MCTestQuestion.objects.filter(contest=contest)
+            questions = MCQuestion.objects.filter(contest=contest)
             for q in questions:
                 result.append({'id': q.id,
                                'content': q.content,
@@ -115,7 +118,7 @@ def questions(request):
                                'd': q.d,
                                'answer': q.answer})
         elif request.GET['type'] == 'wt':
-            questions = WritingTestQuestion.objects.filter(contest=contest)
+            questions = WritingQuestion.objects.filter(contest=contest)
             for q in questions:
                 result.append({'id': q.id,
                                'content': q.content})
@@ -125,3 +128,17 @@ def questions(request):
 @login_required
 def contestants(request):
     pass
+
+
+@login_required
+def do_contest(request):
+    data = {}
+    if 'id' in request.GET:
+        contest = get_object_or_404(Contest, pk=request.GET['id'])
+        if 'generate' in request.GET:
+            data = service.generate_match(contest, user)
+        # elif 'current' in request.GET:
+        #     data = current_match(request, contest_obj)
+        # elif 'submit' in request.GET:
+        #     data = submit_match(request, contest_obj)
+    return HttpResponse(json.dumps(data), content_type='application/json')

@@ -23,7 +23,7 @@
 {% if user.id and remaining > 0 %}
 <div class="row">
     <div class="col-lg-12 text-center">
-        <a class="btn btn-success" href="{% url 'webapp:contest_mc_test' %}">Vào làm bài</a>
+        <a class="btn btn-success" href="{% url 'webapp:contest_do_contest' %}?id={{ contest.id }}">Vào làm bài</a>
     </div>
 </div>
 {% endif %}

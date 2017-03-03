@@ -1,9 +1,12 @@
+from datetime import timedelta
+import random
+
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from common.utilities import get_paginated_list
-from contests.models import Contest, ContestManager, Contestant, Match
+from contests.models import Contest, ContestManager, Contestant, MCQuestion, WritingQuestion, Match
 
 
 def contests(search_criteria=None):
@@ -60,3 +63,56 @@ def remaining_matches(contest, user):
     remaining_matches = contest.maximum_of_matches - \
         Match.objects.filter(contestant=contestant).count()
     return remaining_matches if remaining_matches > 0 else 0
+
+
+def generate_mc_questions(contest):
+    choosed = {}
+    result = []
+    mc_questions = MCQuestion.objects.filter(contest=contest)
+    n = min(contest.mc_test_questions, mc_questions.count())
+    for i in range(n):
+        p = random.randint(0, mc_questions.count() - 1)
+        question_id = mc_questions[p].id
+        while question_id in choosed:
+            v = random.randint(0, mc_questions.count() - 1)
+            question_id = mc_questions[p].id
+        result.append(question_id)
+        choosed[question_id] = ''
+    return result
+
+
+def generate_writing_questions(contest):
+    writing_questions = WritingQuestion.objects.filter(contest=contest)
+    result = []
+    for wq in writing_questions:
+        result.append[wq.id]
+    return result
+
+
+def generate_match(contestant):
+    matches = Match.objects.filter(contestant=contestant)
+    now = timezone.now()
+    contest = contestant.contest
+    if matches.count() < contest.maximum_of_matches:
+        if matches.filter(start_time__lte=now, end_time__gte=now).count() == 0:
+            contestant.participated = True
+            contestant.save()
+            match = Match.objects.create(
+                contestant=contestant, match_id=(matches.count() + 1))
+            if contest.use_mc_test:
+                match.mc_test_questions = json.dumps(
+                    generate_mc_questions(contest))
+            else:
+                match.mc_test_questions = '[]'
+            if contest.user_writing_test:
+                match.writing_test_questions = json.dumps(
+                    generate_writing_questions(contest))
+            else:
+                match.writing_test_questions = '[]'
+            now = timezone.now()
+            match.start_time = now
+            match.end_time = now + \
+                timedelta(minutes=contest.contest_time)
+            match.save()
+            return True
+    return False

@@ -45,15 +45,11 @@ def contest_overview(request):
     return render(request, 'contests/overview.html', template_data)
 
 
-def contest_mc_test(request):
+def contest_do_contest(request):
     if not 'id' in request.GET:
         raise Http404
     contest = get_object_or_404(Contest, pk=request.GET['id'])
-    return render(request, 'contests/mc_test.html', {'contest': contest})
-
-
-def contest_writing_test(request):
-    return render(request, 'contests/writing_test.html', {})
+    return render(request, 'contests/do_contest.html', {'contest': contest})
 
 
 @login_required

@@ -15,15 +15,13 @@ class Contest(BaseModel):
     to_time = models.DateTimeField(null=True, blank=True, default=None)
     short_description = models.TextField(null=True, blank=True, default=None)
     description = models.TextField(null=True, blank=True, default=None)
+    contest_time = models.PositiveIntegerField(default=0)
+    maximum_of_matches = models.PositiveIntegerField(default=0)
 
     use_mc_test = models.BooleanField(default=False)
-    mc_test_time = models.PositiveIntegerField(default=0)
     mc_test_questions = models.PositiveIntegerField(default=0)
 
     use_writing_test = models.BooleanField(default=False)
-    writing_test_time = models.PositiveIntegerField(default=0)
-
-    maximum_of_matches = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return '%s' % (self.name)
@@ -36,11 +34,11 @@ class Contest(BaseModel):
             'to_time',
             'short_description',
             'description',
+            'contest_time',
+            'maximum_of_matches',
             'use_mc_test',
-            'mc_test_time',
             'mc_test_questions',
             'use_writing_test',
-            'writing_test_time'
         ]
 
 
@@ -52,20 +50,22 @@ class ContestUserMixin(BaseModel):
         abstract = True
         unique_together = ('contest', 'user')
 
-    def __unicode__(self):
-        return '%s - %s' % (str(self.contest), str(self.user))
-
     def delete(self):
         self.is_deleted = True
         super(ContestUserMixin, self).delete()
 
 
 class ContestManager(ContestUserMixin):
-    pass
+
+    def __unicode__(self):
+        return '%s - %s' % (str(self.contest.name), str(self.user))
 
 
 class Contestant(ContestUserMixin):
-    pass
+    participated = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return '%s - %s' % (str(self.contest.name), str(self.user))
 
 
 class Question(models.Model):
@@ -81,7 +81,7 @@ class Question(models.Model):
         return '%s - %s' % (str(self.contest), short_cont)
 
 
-class MCTestQuestion(Question):
+class MCQuestion(Question):
     contest = models.ForeignKey(Contest)
     content = models.TextField(default='')
     a = models.TextField(null=True, default=None)
@@ -90,9 +90,16 @@ class MCTestQuestion(Question):
     d = models.TextField(null=True, default=None)
     answer = models.CharField(max_length=2, null=True, default=None)
 
+    @staticmethod
+    def get_field_list():
+        return ['content', 'a', 'b', 'c', 'd', 'answer']
 
-class WritingTestQuestion(Question):
-    pass
+
+class WritingQuestion(Question):
+
+    @staticmethod
+    def get_field_list():
+        return ['content']
 
 
 class Match(BaseModel):
@@ -103,18 +110,13 @@ class Match(BaseModel):
         null=True, blank=True, default='[]')
     writing_test_responses = models.TextField(
         null=True, blank=True, default='{}')
-    writing_test_start_time = models.DateTimeField(
-        null=True, blank=True, default=None)
-    writing_test_end_time = models.DateTimeField(
-        null=True, blank=True, default=None)
 
     mc_test_questions = models.TextField(null=True, blank=True, default='[]')
     mc_test_responses = models.TextField(null=True, blank=True, default='{}')
     mc_test_passed_responses = models.PositiveIntegerField(default=0)
-    mc_test_start_time = models.DateTimeField(
-        null=True, blank=True, default=None)
-    mc_test_end_time = models.DateTimeField(
-        null=True, blank=True, default=None)
+
+    start_time = models.DateTimeField(null=True, blank=True, default=None)
+    end_time = models.DateTimeField(null=True, blank=True, default=None)
 
     class Meta:
         unique_together = ('contestant', 'match_id')
