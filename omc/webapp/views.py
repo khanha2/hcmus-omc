@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, reverse
 
-from contests.models import Contest
+from contests.models import Contest, Contestant
 from contests import service
 # Create your views here.
 
@@ -45,11 +45,19 @@ def contest_overview(request):
     return render(request, 'contests/overview.html', template_data)
 
 
+@login_required
 def contest_do_contest(request):
     if not 'id' in request.GET:
         raise Http404
     contest = get_object_or_404(Contest, pk=request.GET['id'])
-    return render(request, 'contests/do_contest.html', {'contest': contest})
+    contestants = Contestant.objects.filter(contest=contest, user=request.user)
+    if contestants.count() == 0:
+        raise PermissionDenied
+    data = service.get_current_match(contestants[0])
+    if data is None:
+        raise PermissionDenied
+    data['contest'] = contest
+    return render(request, 'contests/do_contest.html', data)
 
 
 @login_required

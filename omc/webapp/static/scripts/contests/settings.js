@@ -66,7 +66,7 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 use_mc_test: $('#use-mctest').prop('checked') == true,
-                mc_test_questions: $('#mctest-questions').val(),
+                mc_questions: $('#mctest-questions').val(),
                 csrfmiddlewaretoken: csrfToken
             },
             success: function(response) {
@@ -93,6 +93,7 @@ $(document).ready(function() {
                 short_description: $('#contest-short-desc').val(),
                 description: $('#contest-desc').val(),
                 contest_time: $('#contest-time').val(),
+                maximum_of_matches: $('#contest-maximum-of-matches').val(),
                 csrfmiddlewaretoken: csrfToken
             },
             success: function(response) {

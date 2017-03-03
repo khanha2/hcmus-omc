@@ -31,6 +31,14 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2" for="contest-name">Số lượt làm bài tối đa</label>
+            <div class="col-md-10">
+                <div class="form-inline">
+                    <input type="number" class="form-control" min="0" value="{{ contest.maximum_of_matches }}" id="contest-maximum-of-matches">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2" for="pwd">Mô tả ngắn</label>
             <div class="col-md-10">
                 <textarea class="form-control" id="contest-short-desc">{% if contest.short_description %}{{ contest.short_description }}{% endif %}</textarea>

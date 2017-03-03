@@ -129,16 +129,13 @@ def questions(request):
 def contestants(request):
     pass
 
-
 @login_required
 def do_contest(request):
     data = {}
     if 'id' in request.GET:
         contest = get_object_or_404(Contest, pk=request.GET['id'])
         if 'generate' in request.GET:
-            data = service.generate_match(contest, user)
-        # elif 'current' in request.GET:
-        #     data = current_match(request, contest_obj)
-        # elif 'submit' in request.GET:
-        #     data = submit_match(request, contest_obj)
+            data['success'] = service.generate_match(contest, request.user)
+        elif 'submit' in request.GET:
+            data['success'] = service.submit_match(request, contest)
     return HttpResponse(json.dumps(data), content_type='application/json')

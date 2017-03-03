@@ -19,7 +19,7 @@ class Contest(BaseModel):
     maximum_of_matches = models.PositiveIntegerField(default=0)
 
     use_mc_test = models.BooleanField(default=False)
-    mc_test_questions = models.PositiveIntegerField(default=0)
+    mc_questions = models.PositiveIntegerField(default=0)
 
     use_writing_test = models.BooleanField(default=False)
 
@@ -37,7 +37,7 @@ class Contest(BaseModel):
             'contest_time',
             'maximum_of_matches',
             'use_mc_test',
-            'mc_test_questions',
+            'mc_questions',
             'use_writing_test',
         ]
 
@@ -106,14 +106,14 @@ class Match(BaseModel):
     contestant = models.ForeignKey(Contestant)
     match_id = models.PositiveSmallIntegerField()
 
-    writing_test_questions = models.TextField(
+    writing_questions = models.TextField(
         null=True, blank=True, default='[]')
-    writing_test_responses = models.TextField(
+    writing_responses = models.TextField(
         null=True, blank=True, default='{}')
 
-    mc_test_questions = models.TextField(null=True, blank=True, default='[]')
-    mc_test_responses = models.TextField(null=True, blank=True, default='{}')
-    mc_test_passed_responses = models.PositiveIntegerField(default=0)
+    mc_questions = models.TextField(null=True, blank=True, default='[]')
+    mc_responses = models.TextField(null=True, blank=True, default='{}')
+    mc_passed_responses = models.PositiveIntegerField(default=0)
 
     start_time = models.DateTimeField(null=True, blank=True, default=None)
     end_time = models.DateTimeField(null=True, blank=True, default=None)
