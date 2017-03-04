@@ -14,7 +14,7 @@ from contests import resource, service
 
 
 def contests(request):
-    return HttpResponse(json.dumps(service.contests()), content_type='application/json')
+    return HttpResponse(json.dumps(service.contests(request)), content_type='application/json')
 
 
 @login_required

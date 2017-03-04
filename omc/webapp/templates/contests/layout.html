@@ -2,9 +2,10 @@
 
 {% load staticfiles %}
 
+{% block title %}{{ contest.name }}{% endblock %}
+
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/contest.css' %}">
-
 {% endblock styles %}
 
 {% block content %}

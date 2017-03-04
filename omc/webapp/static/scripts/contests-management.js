@@ -15,7 +15,7 @@ $(document).ready(function() {
         $.ajax({
             url: contestsApiUrl,
             type: 'GET',
-            data: { page: page },
+            data: { page: page, management: '' },
             success: function(response) {
                 $(response).each(function(index, element) {
                     addItem(element);

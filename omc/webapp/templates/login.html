@@ -2,6 +2,8 @@
 
 {% load staticfiles %}
 
+{% block title %}Đăng nhập{% endblock %}
+
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/login.css' %}">
 {% endblock %}
@@ -22,7 +24,7 @@
                 <div class="text-danger" id="message"></div>
             </div>
             <button type="button" class="btn btn-success btn-login" id="btn-login">Đăng nhập</button>
-            <a href="#">Quên mật khẩu?</a>
+            <!-- <a href="#">Quên mật khẩu?</a> -->
         </div>
     </div>
 </div>
