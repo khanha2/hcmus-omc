@@ -129,7 +129,7 @@ class Match(BaseModel):
     #     return '%s' % str(self.contestant)
 
 
-auditlog.register(Contest)
-auditlog.register(ContestManager)
-auditlog.register(Contestant)
-auditlog.register(Match)
+# auditlog.register(Contest)
+# auditlog.register(ContestManager)
+# auditlog.register(Contestant)
+# auditlog.register(Match)
