@@ -53,6 +53,8 @@ def can_participate_contest(contest):
 
 
 def can_manage_contest(contest, user):
+    if not user.id:
+        return False
     if user.is_superuser:
         return True
     managers = ContestManager.objects.filter(contest=contest, user=user)
