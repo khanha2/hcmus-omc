@@ -124,8 +124,8 @@ class Match(BaseModel):
     def save(self, *args, **kwargs):
         super(Match, self).save(*args, **kwargs)
 
-    def __unicode__(self):
-        return '%s' % str(self.contestant)
+    # def __unicode__(self):
+    #     return '%s' % str(self.contestant)
 
 
 auditlog.register(Contest)
