@@ -22,11 +22,12 @@ def contests(search_criteria=None):
         contest_dict = {}
         contest_dict['id'] = c.id
         contest_dict['name'] = c.name
+        contest_dict['short_description'] = c.short_description
         if not c.from_time or not c.to_time:
             contest_dict['time_string'] = None
         else:
             contest_dict[
-                'time_string'] = '%s - %s' % (str(c.from_time), str(c.to_time))
+                'time_string'] = '%s - %s' % (c.from_time.strftime('%m/%d/%Y %H:%M'), c.to_time.strftime('%m/%d/%Y %H:%M'))
         result.append(contest_dict)
     return result
 

@@ -6,13 +6,12 @@ $(document).ready(function() {
         $('#contest-to-time').datetimepicker({ format: "DD/MM/YYYY hh:mm" });
     }
 
-    function addItem(element) {
-        var timeString = element.time_string == null ? '<em>Chưa có thông tin</em>' : element.time_string;
-        var row = '<li class="list-group-item"><div class="pull-right"><a class="btn btn-default btn-sm" href="' + contestAdminUrl + '?id=' + element.id + '"><i class="glyphicon glyphicon-cog"></i></a></div><h4 class="list-group-item-heading"><a href="' + contestUrl + '?id=' + element.id + '">' + element.name + '</a></h4><p class="list-group-item-text">' + timeString + '</p></li>';
-        $('#contests').append(row);
-    }
-
     function loadData() {
+        function addItem(element) {
+            var timeString = element.time_string == null ? '<em>Chưa có thông tin</em>' : element.time_string;
+            var row = '<li class="list-group-item"><div class="pull-right"><a class="btn btn-default btn-sm" href="' + contestAdminUrl + '?id=' + element.id + '"><i class="glyphicon glyphicon-cog"></i></a></div><h4 class="list-group-item-heading"><a href="' + contestUrl + '?id=' + element.id + '">' + element.name + '</a></h4><p class="list-group-item-text">' + timeString + '</p></li>';
+            $('#contests').append(row);
+        }
         $.ajax({
             url: contestsApiUrl,
             type: 'GET',
