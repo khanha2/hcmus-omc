@@ -171,7 +171,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
 
 # Number of Items per page
-PAGINATE_LIST_BY = 10
+PAGINATE_LIST_BY = 20
 
 # File upload handlers
 FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",

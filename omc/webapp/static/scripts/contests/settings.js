@@ -175,6 +175,10 @@ $(document).ready(function() {
         });
     }
 
+    function loadContestants() {
+
+    }
+    
     $('#btn-update-overview').on('click', function(e) {
         e.preventDefault();
         updateOverviewInfo();

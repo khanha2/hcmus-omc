@@ -127,7 +127,12 @@ def questions(request):
 
 @login_required
 def contestants(request):
-    pass
+    contest = service.get_contest_from_request(request, True)
+    page = request.GET.get('page')
+    pages, page, matches = service.get_matches(contest, request, page)
+    result = {'pages': pages, 'page': page, 'data': matches}
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
 
 @login_required
 def do_contest(request):

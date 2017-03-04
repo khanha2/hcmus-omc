@@ -33,7 +33,10 @@ var contestId = {{ contest.id }};
 var updateUrl ='{% url 'contests:update' %}';
 var uploadQuestionsUrl = '{% url 'contests:upload_questions' %}';
 var questionsUrl = '{% url 'contests:questions' %}';
+var contestantsUrl = '{% url 'contests:contestants' %}';
 </script>
 
-<script type="text/javascript" src="{%  static 'scripts/contests/settings.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/utilities/pagination.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/contests/settings.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/contests/contestants.js' %}"></script>
 {% endblock %}

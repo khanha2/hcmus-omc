@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from common.utilities import get_paginated_list
+from common.utilities import get_paginated_list, in_range
 from contests.models import Contest, ContestManager, Contestant, MCQuestion, WritingQuestion, Match
 
 
@@ -208,3 +208,28 @@ def submit_match(request, contest):
                 match.save()
                 return True
     return False
+
+
+def get_matches(contest, search_criteria=None, page=1):
+    pages, page, matches = get_paginated_list(Match.objects.filter(
+        contestant__in=Contestant.objects.filter(contest=contest)), page)
+    result = []
+    now = timezone.now()
+    for match in matches:
+        result.append({
+            'user_id': match.contestant.user.id,
+            'user_username': match.contestant.user.username,
+            'user_fullname': str(match.contestant.user),
+            'contest_id': match.contestant.contest.id,
+            'match_id': match.match_id,
+            'use_mc_test': match.contestant.contest.use_mc_test,
+            'use_writing_test': match.contestant.contest.use_writing_test,
+            'mc_questions': load_mc_questions(match),
+            'writing_questions': load_writing_questions(match),
+            'mc_responses': json.loads(match.mc_responses),
+            'writing_responses': json.loads(match.writing_responses),
+            'mc_passed_responses': match.mc_passed_responses,
+            'contest_time': (match.end_time - match.start_time).seconds,
+            'doing': in_range(match.start_time, match.end_time, now)
+        })
+    return pages, page, result
