@@ -76,7 +76,7 @@ def generate_mc_questions(contest):
         p = random.randint(0, mc_questions.count() - 1)
         question_id = mc_questions[p].id
         while question_id in choosed:
-            v = random.randint(0, mc_questions.count() - 1)
+            p = random.randint(0, mc_questions.count() - 1)
             question_id = mc_questions[p].id
         result.append(question_id)
         choosed[question_id] = ''
@@ -94,9 +94,10 @@ def generate_match(contest, user):
         contest=contest, user=user)
     matches = Match.objects.filter(contestant=contestant, is_deleted=False)
     now = timezone.now()
-    if matches.count() < contest.maximum_of_matches:
+    count = matches.count()
+    if count < contest.maximum_of_matches:
         if matches.filter(start_time__lte=now, end_time__gte=now).count() == 0:
-            match = Match(contestant=contestant, match_id=(matches.count() + 1))
+            match = Match(contestant=contestant, match_id=(count + 1))
             if contest.use_mc_test:
                 match.mc_questions = json.dumps(generate_mc_questions(contest))
             else:
