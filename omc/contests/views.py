@@ -188,3 +188,12 @@ def export_results(request):
             i += 1
         data.append(t)
     return excel.make_response_from_records(data, 'xlsx', file_name='results')
+
+
+@login_required
+def match_detail(request):
+    contest = service.get_contest_from_request(request, True)
+    match = get_object_or_404(Match, pk=request.GET.get('match_id'))
+    data = {}
+    
+    return HttpResponse(json.dumps(data), content_type='application/json')

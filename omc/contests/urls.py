@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^questions/$', views.questions, name='questions'),
     url(r'^do-contest/$', views.do_contest, name='do_contest'),
     url(r'^contestants/$', views.contestants, name='contestants'),
-    url(r'^export-results/$', views.export_results, name='export_results')
+    url(r'^export-results/$', views.export_results, name='export_results'),
+    url(r'^match-detail/$', views.match_detail, name='match_detail')
 ]

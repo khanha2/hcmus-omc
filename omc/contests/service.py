@@ -121,17 +121,20 @@ def load_mc_questions(match):
     result = []
     view_id = 1
     for i in mc_question_ids:
-        question = MCQuestion.objects.get(id=i)
-        result.append({
-            'id': question.id,
-            'view_id': view_id,
-            'content': question.content,
-            'a': question.a,
-            'b': question.b,
-            'c': question.c,
-            'd': question.d,
-        })
-        view_id += 1
+        try:
+            question = MCQuestion.objects.get(id=i)
+            result.append({
+                'id': question.id,
+                'view_id': view_id,
+                'content': question.content,
+                'a': question.a,
+                'b': question.b,
+                'c': question.c,
+                'd': question.d,
+            })
+            view_id += 1
+        except:
+            pass
     return result
 
 
@@ -222,10 +225,6 @@ def get_matches(contest, search_criteria=None, page=1):
             'match_name': match.match_id,
             'use_mc_test': match.contestant.contest.use_mc_test,
             'use_writing_test': match.contestant.contest.use_writing_test,
-            'mc_questions': load_mc_questions(match),
-            'writing_questions': load_writing_questions(match),
-            'mc_responses': json.loads(match.mc_responses),
-            'writing_responses': json.loads(match.writing_responses),
             'mc_passed_responses': match.mc_passed_responses,
             'contest_time': (match.end_time - match.start_time).seconds,
             'doing': in_range(match.start_time, match.end_time, now)
@@ -233,7 +232,7 @@ def get_matches(contest, search_criteria=None, page=1):
     return pages, page, result
 
 
-def get_match_detail(match):   
+def get_match_detail(match):
     data = {
         'user_fullname': str(match.contestant.user),
         'use_mc_test': match.contestant.contest.use_mc_test,
@@ -255,7 +254,8 @@ def get_match_detail(match):
         data['mc_questions'] = temp_data
     if contest.use_writing_test:
         writing_question_ids = json.loads(match.writing_questions)
-        writing_questions = WritingQuestion.objects.filter(id__in=writing_question_ids)
+        writing_questions = WritingQuestion.objects.filter(
+            id__in=writing_question_ids)
         writing_responses = json.loads(match.writing_responses)
         temp_data = []
         for q in writing_questions:
