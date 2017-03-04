@@ -39,10 +39,12 @@
             <table class="table table-striped table-bordered" id="matches-table">
                 <thead>
                     <th>Lượt thi</th>
-                    <th>Số câu đúng</th>
                     <th>Thời gian thi</th>
+                    {% if contest.use_mc_test %}
+                    <th>Số câu trắc nghiệm đúng</th>
+                    {% endif %}
                 </thead>
-                <tbody>
+                <tbody id="tbody-match-results">
                 </tbody>
             </table>
         </div>
@@ -56,6 +58,7 @@
 var contestId = {{ contest.id }};
 var apiContestUrl = '{% url 'contests:do_contest' %}';
 var doContestUrl = '{% url 'webapp:contest_do_contest' %}?id={{ contest.id }}';
+var matchResultUrl = '{% url 'contests:match_results' %}';
 </script>
 
 <script type="text/javascript" src={% static 'scripts/contests/overview.js' %}></script>

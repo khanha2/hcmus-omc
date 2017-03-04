@@ -195,5 +195,26 @@ def match_detail(request):
     contest = service.get_contest_from_request(request, True)
     match = get_object_or_404(Match, pk=request.GET.get('match_id'))
     data = {}
-    
+
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@login_required
+def match_results(request):
+    contest = service.get_contest_from_request(request)
+    contestants = Contestant.objects.filter(contest=contest, user=request.user)
+    if contestants.count() == 0:
+        return HttpResponse(json.dumps([]), content_type='application/json')
+    matches = Match.objects.filter(contestant=contestants[0])
+    result = []
+    now = timezone.now()
+    for m in matches:
+        t = {
+            'use_mc_test': contest.use_mc_test,
+            'contest_time': (m.end_time - m.start_time).seconds,
+            'mc_passed_responses': m.mc_passed_responses,
+            'match_name': m.match_id,
+            'doing': in_range(m.start_time, m.end_time, now)
+        }
+        result.append(t)
+    return HttpResponse(json.dumps(result), content_type='application/json')
