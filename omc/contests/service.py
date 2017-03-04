@@ -94,13 +94,9 @@ def generate_match(contest, user):
         contest=contest, user=user)
     matches = Match.objects.filter(contestant=contestant, is_deleted=False)
     now = timezone.now()
-    contest = contestant.contest
     if matches.count() < contest.maximum_of_matches:
         if matches.filter(start_time__lte=now, end_time__gte=now).count() == 0:
-            contestant.participated = True
-            contestant.save()
-            match = Match.objects.create(
-                contestant=contestant, match_id=(matches.count() + 1))
+            match = Match(contestant=contestant, match_id=(matches.count() + 1))
             if contest.use_mc_test:
                 match.mc_questions = json.dumps(generate_mc_questions(contest))
             else:
@@ -115,7 +111,7 @@ def generate_match(contest, user):
             match.end_time = now + \
                 timedelta(minutes=contest.contest_time)
             match.save()
-            return True
+        return True
     return False
 
 
@@ -221,7 +217,8 @@ def get_matches(contest, search_criteria=None, page=1):
             'user_username': match.contestant.user.username,
             'user_fullname': str(match.contestant.user),
             'contest_id': match.contestant.contest.id,
-            'match_id': match.match_id,
+            'match_id': match.id,
+            'match_name': match.match_id,
             'use_mc_test': match.contestant.contest.use_mc_test,
             'use_writing_test': match.contestant.contest.use_writing_test,
             'mc_questions': load_mc_questions(match),
@@ -233,3 +230,38 @@ def get_matches(contest, search_criteria=None, page=1):
             'doing': in_range(match.start_time, match.end_time, now)
         })
     return pages, page, result
+
+
+def get_match_detail(match):   
+    data = {
+        'user_fullname': str(match.contestant.user),
+        'use_mc_test': match.contestant.contest.use_mc_test,
+        'use_writing_test': match.contestant.contest.use_writing_test,
+    }
+    contest = match.contestant.contest
+    if contest.use_mc_test:
+        mc_question_ids = json.loads(match.mc_questions)
+        mc_questions = MCQuestion.objects.filter(id__in=mc_question_ids)
+        mc_responses = json.loads(match.mc_responses)
+        temp_data = []
+        for q in mc_questions:
+            t = {'id': q.id,
+                 'content': q.content,
+                 'answer': q.answer}
+            if q.id in mc_responses:
+                t['response'] = mc_responses['q.id']
+            temp_data.append(t)
+        data['mc_questions'] = temp_data
+    if contest.use_writing_test:
+        writing_question_ids = json.loads(match.writing_questions)
+        writing_questions = WritingQuestion.objects.filter(id__in=writing_question_ids)
+        writing_responses = json.loads(match.writing_responses)
+        temp_data = []
+        for q in writing_questions:
+            t = {'id': q.id,
+                 'content': q.content}
+            if q.id in writing_responses:
+                t['response'] = writing_responses['q.id']
+            temp_data.append(t)
+        data['writing_questions'] = temp_data
+    return data
