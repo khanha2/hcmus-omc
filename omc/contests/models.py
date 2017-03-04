@@ -56,16 +56,17 @@ class ContestUserMixin(BaseModel):
 
 
 class ContestManager(ContestUserMixin):
+    pass
 
-    def __unicode__(self):
-        return '%s - %s' % (str(self.contest.name), str(self.user))
+    # def __unicode__(self):
+    #     return '%s - %s' % (str(self.contest.name), str(self.user))
 
 
 class Contestant(ContestUserMixin):
     participated = models.BooleanField(default=False)
 
-    def __unicode__(self):
-        return '%s - %s' % (str(self.contest.name), str(self.user))
+    # def __unicode__(self):
+    #     return '%s - %s' % (str(self.contest.name), str(self.user))
 
 
 class Question(models.Model):
