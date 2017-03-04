@@ -3,16 +3,14 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 
 import django_excel as excel
-import pyexcel.ext.xls
-import pyexcel.ext.xlsx
 
 from common.forms import UploadFileForm
-from common.utilities import convert_string_to_time
-from contests.models import Contest, ContestManager, MCQuestion, WritingQuestion
-from contests import service
-# Create your views here.
+from common.utilities import convert_string_to_time, in_range
+from contests.models import Contest, Contestant, ContestManager, MCQuestion, WritingQuestion, Match
+from contests import resource, service
 
 
 def contests(request):
@@ -144,3 +142,49 @@ def do_contest(request):
         elif 'submit' in request.GET:
             data['success'] = service.submit_match(request, contest)
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+def get_time_string(time):
+    minutes = time / 60
+    seconds = time % 60
+    min_str = str(minutes)
+    sec_str = str(seconds)
+    if minutes < 10:
+        min_str = '0' + str(minutes)
+    if seconds < 10:
+        sec_str = '0' + str(seconds)
+    return min_str + ':' + sec_str
+
+
+@login_required
+def export_results(request):
+    contest = service.get_contest_from_request(request, True)
+    matches = Match.objects.filter(
+        contestant__in=Contestant.objects.filter(contest=contest, is_deleted=False))
+    data = []
+    writing_questions = WritingQuestion.objects.filter(contest=contest)
+    now = timezone.now()
+    for m in matches:
+        t = {}
+        t[resource. contestant_user_username] = m.contestant.user.username
+        t[resource.contestant_user_fullname] = str(m.contestant.user)
+        t[resource.contestant_match] = m.match_id
+        t[resource.contest_time] = ''
+        if not in_range(m.start_time, m.end_time, now):
+            t[resource.contest_time] = get_time_string(
+                (m.end_time - m.start_time).seconds)
+        t[resource.mc_passed_responses] = m.mc_passed_responses
+        i = 1
+        writing_responses = json.loads(m.writing_responses)
+        for q in writing_questions:
+            l = '%s %s %s' % (unicode(str(i + 5)),
+                              resource.writing, unicode(str(i)))
+            if i + 5 < 10:
+                l = unicode(str(0)) + l
+            if str(q.id) in writing_responses:
+                t[l] = writing_responses[str(q.id)]
+            else:
+                t[l] = ''
+            i += 1
+        data.append(t)
+    return excel.make_response_from_records(data, 'xlsx', file_name='results')
