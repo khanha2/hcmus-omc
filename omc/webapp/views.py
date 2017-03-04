@@ -28,9 +28,7 @@ def logout(request):
 
 
 def contest_overview(request):
-    if not 'id' in request.GET:
-        raise Http404
-    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    contest = service.get_contest_from_request(request)
     if not contest.from_time or not contest.to_time:
         contest.time_string = None
     else:
@@ -38,18 +36,16 @@ def contest_overview(request):
                                            str(contest.to_time))
     template_data = {'contest': contest,
                      'can_participate': service.can_participate_contest(contest),
-                     'can_manage': service. can_manage_contest(contest, request.user)}
+                     'can_manage': service.can_manage_contest(contest, request.user)}
     if request.user.id:
-        template_data['remaining'] = service.remaining_matches(
+        template_data['remaining_matches'] = service.remaining_matches(
             contest, request.user)
     return render(request, 'contests/overview.html', template_data)
 
 
 @login_required
 def contest_do_contest(request):
-    if not 'id' in request.GET:
-        raise Http404
-    contest = get_object_or_404(Contest, pk=request.GET['id'])
+    contest = service.get_contest_from_request(request)
     contestants = Contestant.objects.filter(contest=contest, user=request.user)
     if contestants.count() == 0:
         raise PermissionDenied
@@ -62,8 +58,8 @@ def contest_do_contest(request):
 
 @login_required
 def contest_admin(request):
-    contest = service.get_contest_from_request(request)
-    return render(request, 'contests/admin.html', {'contest': contest})
+    contest = service.get_contest_from_request(request, True)
+    return render(request, 'contests/admin/admin.html', {'contest': contest})
 
 
 @login_required

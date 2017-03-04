@@ -31,15 +31,14 @@ def contests(search_criteria=None):
     return result
 
 
-def get_contest_from_request(request):
-    if not request.user.is_superuser and not request.user.can_create_contest:
-        raise PermissionDenied
+def get_contest_from_request(request, management=False):
     if not 'id' in request.GET:
         raise Http404
     contest = get_object_or_404(Contest, pk=request.GET['id'])
-    if not request.user.is_superuser:
-        if not can_manage_contest(contest, request.user):
-            raise PermissionDenied
+    if contest.is_deleted:
+        raise Http404
+    if management and not can_manage_contest(contest, request.user):
+        raise PermissionDenied
     return contest
 
 
@@ -53,6 +52,8 @@ def can_participate_contest(contest):
 
 
 def can_manage_contest(contest, user):
+    if user.is_superuser:
+        return True
     managers = ContestManager.objects.filter(contest=contest, user=user)
     return managers.count() > 0
 
@@ -140,12 +141,15 @@ def load_mc_questions(match):
 def load_writing_questions(match):
     writing_question_ids = json.loads(match.writing_questions)
     result = []
+    view_id = 1
     for i in writing_question_ids:
         question = WritingQuestion.objects.get(id=i)
         result.append({
             'id': question.id,
+            'view_id': view_id,
             'content': question.content,
         })
+        view_id += 1
     return result
 
 

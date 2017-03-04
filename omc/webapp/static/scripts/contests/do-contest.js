@@ -7,7 +7,7 @@ $(document).ready(function() {
         });
         var writingResponses = $('textarea');
         $(writingResponses).each(function(index, element) {
-            post_data['wtr_' + $(element).attr('id')] = $(element).val();
+            post_data['wtr_' + $(element).attr('name')] = $(element).val();
         });
         post_data['csrfmiddlewaretoken'] = csrfToken;
         $.ajax({

@@ -54,7 +54,7 @@ def update_time(contest, field, time_str):
 @login_required
 def update(request):
     result = {'success': False}
-    contest = service.get_contest_from_request(request)
+    contest = service.get_contest_from_request(request, True)
     if request.method == 'POST':
         for f in Contest.get_field_list():
             if f in request.POST:
@@ -74,7 +74,7 @@ def update(request):
 
 @login_required
 def upload_questions(request):
-    contest = service.get_contest_from_request(request)
+    contest = service.get_contest_from_request(request, True)
     form = UploadFileForm(request.POST, request.FILES)
     if form.is_valid():
         if request.POST['type'] == 'mc':
@@ -104,7 +104,7 @@ def delete_contest(request):
 
 @login_required
 def questions(request):
-    contest = service.get_contest_from_request(request)
+    contest = service.get_contest_from_request(request, True)
     result = []
     if 'type' in request.GET:
         if request.GET['type'] == 'mc':

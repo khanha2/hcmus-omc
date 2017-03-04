@@ -27,7 +27,7 @@
                 <a href="#tab-mc-questions" data-toggle="tab"> Trắc nghiệm</a>
             </li>
             <li>
-                <a href="#tab-writing-test" data-toggle="tab"> Tự luận</a>
+                <a href="#tab-writing-questions" data-toggle="tab"> Tự luận</a>
             </li>
         </ul>
     </div>
@@ -46,19 +46,19 @@
                             <p>{{ question.content }}</p>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{ question.id }}" value="a">{{ question.a }}</label>
+                                    <input type="radio" name="{{ question.id }}" value="a">{{ question.a|safe }}</label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{ question.id }}" value="b">{{ question.b }}</label>
+                                    <input type="radio" name="{{ question.id }}" value="b">{{ question.b|safe }}</label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{ question.id }}" value="c">{{ question.c }}</label>
+                                    <input type="radio" name="{{ question.id }}" value="c">{{ question.c|safe }}</label>
                             </div>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" name="{{ question.id }}" value="d">{{ question.d }}</label>
+                                    <input type="radio" name="{{ question.id }}" value="d">{{ question.d|safe }}</label>
                             </div>
                         </div>
                     </div>
@@ -69,13 +69,13 @@
             {% if contest.use_writing_test %}
             <div id="tab-writing-questions" {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade" {% endif %}>
                 <div class="panel-group" id="writing-questions">
-                    {% for question in mc_questions %}
+                    {% for question in writing_questions %}
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <strong>Câu hỏi {{ question.view_id }}:</strong>
-                            <p>{{ question.content }}</p>
+                            <p>{{ question.content|safe }}</p>
                             <div class="form-group">
-                                <textarea class="form-control" rows="5" name="wt-{{ question.id }}"></textarea>
+                                <textarea class="form-control" rows="5" name="{{ question.id }}"></textarea>
                             </div>
                         </div>
                     </div>
