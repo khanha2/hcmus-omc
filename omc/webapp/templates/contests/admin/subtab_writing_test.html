@@ -1,0 +1,25 @@
+<div id="tab-writing-test" class="tab-pane fade">
+    <div id="writingtest-alert-frame"></div>
+    <h4>Cấu hình</h4>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-3" for="contest-name">Sử dụng phần thi</label>
+            <div class="col-md-9">
+                <input type="checkbox" id="use-writingtest" {% if contest.use_writing_test %}checked{% endif %}>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="button" class="btn btn-success" id="btn-update-writingtest">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h4>Danh sách câu hỏi</h4>
+    <div class="form-group">
+        <button class="btn btn-default" title="Cập nhật danh sách câu hỏi" data-toggle="modal" data-target="#modal-upload-writing-questions"><i class="glyphicon glyphicon-upload"></i></button>
+    </div>
+    <div class="panel-group" id="writing-questions">
+    </div>
+</div>
+{% include 'contests/admin/modal_upload_writing_questions.html' %}

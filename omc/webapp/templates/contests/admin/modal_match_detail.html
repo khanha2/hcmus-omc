@@ -1,0 +1,33 @@
+<div class="modal fade" id="modal-match-detail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Chi tiết lượt thi</h4>
+            </div>
+            <div class="modal-body">
+                {% if contest.use_mc_test and contest.use_writing_test %}
+                <ul class="nav nav-tabs ">
+                    <li class="active">
+                        <a href="#match-mc-questions" data-toggle="tab"> Trắc nghiệm</a>
+                    </li>
+                    <li>
+                        <a href="#match-writing-questions" data-toggle="tab"> Tự luận</a>
+                    </li>
+                </ul>
+                {% endif %}
+                <div class="tab-content" style="height: 260px;">
+                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade in active"{% endif %} id="match-mc-questions">
+                        <div class="general-item-list scroller" style="height: 240px;"></div>
+                    </div>
+                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade"{% endif %} id="match-writing-questions">
+                        <div class="general-item-list scroller" style="height: 240px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

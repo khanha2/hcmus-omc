@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Trang chủ{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/index.css' %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Các hoạt động đang diễn ra</h1>
+        <div class="panel-group" id="current-contests">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+var contestsApiUrl = '{% url 'contests:contests' %}';
+var contestUrl = '{% url 'webapp:contest_overview' %}';
+</script>
+
+<script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
+{% endblock %}

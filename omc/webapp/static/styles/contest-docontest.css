@@ -1,0 +1,47 @@
+.affix {
+    top: 15px;
+    position: fixed;
+    width: 350px;
+    z-index: 5;
+}
+
+.contest-controller {
+    background: #eff3f8;
+    padding: 0 10px;
+    border: 1px solid #dae2ea;
+}
+
+.contest-controller .group {
+    margin: 0;
+    padding: 0;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.contest-controller h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.contest-controller .btn-submit {
+    float: right;
+    margin: 10px 0;
+}
+
+.tabbable-line {
+    margin-bottom: 0;
+}
+
+.contest-content {
+    margin-top: 10px;
+}
+
+.contest-content textarea {
+    resize: vertical;
+}
+
+.tabs-group {
+    background: #fff;
+    border: 1px solid #dae2ea;
+    padding-top: 5px;
+}

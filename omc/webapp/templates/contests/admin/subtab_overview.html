@@ -1,0 +1,59 @@
+<div id="tab-oveview" class="tab-pane fade in active">
+    <div id="overview-alert-frame"></div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="contest-name">Tên hoạt động</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="contest-name" value="{{ contest.name }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Thời gian tổ chức</label>
+            <div class="col-md-10">
+                <div class="form-inline">
+                    <div class="input-group date" id="contest-from-time">
+                        <input type="text" class="form-control" placeholder="Từ" value="{% if contest.from_time %}{{ contest.from_time }}{% endif %}" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <div class="input-group date" id="contest-to-time">
+                        <input type="text" class="form-control" placeholder="Đến" value="{% if contest.to_time %}{{ contest.to_time }}{% endif %}" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="contest-name">Thời gian thi (phút)</label>
+            <div class="col-md-10">
+                <div class="form-inline">
+                    <input type="number" class="form-control" min="0" value="{{ contest.contest_time }}" id="contest-time">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="contest-name">Số lượt làm bài tối đa</label>
+            <div class="col-md-10">
+                <div class="form-inline">
+                    <input type="number" class="form-control" min="0" value="{{ contest.maximum_of_matches }}" id="contest-maximum-of-matches">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="pwd">Mô tả ngắn</label>
+            <div class="col-md-10">
+                <textarea class="form-control" id="contest-short-desc">{% if contest.short_description %}{{ contest.short_description }}{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="pwd">Mô tả chi tiết</label>
+            <div class="col-md-10">
+                <textarea class="form-control" id="contest-desc">{% if contest.short_description %}{{ contest.description }}{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-success" id="btn-update-overview">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

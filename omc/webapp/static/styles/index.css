@@ -1,0 +1,12 @@
+.event i {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.event h3 a:hover {
+    text-decoration: none;
+}
+
+.event div.pull-right {
+	margin-top: 20px;
+}

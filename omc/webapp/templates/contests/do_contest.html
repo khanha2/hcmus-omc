@@ -1,0 +1,100 @@
+{% extends 'contests/layout.html' %}
+
+{% load staticfiles %}
+
+{% block styles %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/contest-docontest.css' %}">
+{% endblock styles %}
+
+{% block child_content %}
+<div data-spy="affix" data-offset-top="195">
+    <div class="contest-controller">
+        <div class="form form-inline">
+            <div class="group">
+                <label><strong>Thời gian còn lại:</strong></label>
+                <div class="form-control-static">
+                    <h2 id="time">00:00</h2>
+                </div>
+            </div>
+            <button class="btn btn-success btn-sm btn-submit" id="btn-submit">Nộp bài</button>
+        </div>
+    </div>
+    {% if contest.use_mc_test and contest.use_writing_test %}
+    <div class="tabs-group" id="#tabs-group">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab-mc-questions" data-toggle="tab"> Trắc nghiệm</a>
+            </li>
+            <li>
+                <a href="#tab-writing-questions" data-toggle="tab"> Tự luận</a>
+            </li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+<div class="row contest-content">
+    <div class="col-lg-12">
+        <div class="tab-content">
+            {% if contest.use_mc_test %}
+            <div id="tab-mc-questions" {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade in active" {% endif %}>
+                <div class="panel-group" id="mc-questions">
+                    {% for question in mc_questions %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <strong>Câu hỏi {{ question.view_id }}:</strong>
+                            <p>{{ question.content }}</p>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="{{ question.id }}" value="a">{{ question.a|safe }}</label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="{{ question.id }}" value="b">{{ question.b|safe }}</label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="{{ question.id }}" value="c">{{ question.c|safe }}</label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="{{ question.id }}" value="d">{{ question.d|safe }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% if contest.use_writing_test %}
+            <div id="tab-writing-questions" {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade" {% endif %}>
+                <div class="panel-group" id="writing-questions">
+                    {% for question in writing_questions %}
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <strong>Câu hỏi {{ question.view_id }}:</strong>
+                            <p>{{ question.content|safe }}</p>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" name="{{ question.id }}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+var contestId = {{contest.id}};
+var initRemainingTime = {{ remaining }};
+var contestOverviewUrl = '{% url 'webapp:contest_overview' %}?id={{ contest.id }}';
+var apiContestUrl = '{% url 'contests:do_contest' %}';
+</script>
+
+<script type="text/javascript" src="{% static 'scripts/contests/do-contest.js' %}"></script>
+{% endblock %}
