@@ -91,7 +91,7 @@ $(document).ready(function() {
         if (typeof responseList[question.id] !== 'undefined') {
             response = responseList[question.id];
         }
-        var item = '<div class="panel panel-default"><div class="panel-body"><strong>Câu hỏi ' + index + ':</strong><p>' + question.content + '</p>Câu trả lời: ' + response + '<br>Đáp án: <strong>' + question.answer + '</strong></div></div>';
+        var item = '<div class="panel panel-default"><div class="panel-body"><strong>Câu hỏi ' + index + ':</strong><p>' + question.content + '</p>Câu trả lời: <strong>' + response + '</strong><br>Đáp án: <strong>' + question.answer + '</strong></div></div>';
         $('#match-mc-questions').find('.panel-group').append(item);
     };
 
