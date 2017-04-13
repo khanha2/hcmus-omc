@@ -27,7 +27,7 @@ def contests(search_criteria=None):
             contest_dict['time_string'] = None
         else:
             contest_dict[
-                'time_string'] = '%s - %s' % (c.from_time.strftime('%m/%d/%Y %G:%M %A'), c.to_time.strftime('%m/%d/%Y %G:%M %A'))
+                'time_string'] = '%s - %s' % (c.from_time.strftime('%m/%d/%Y %I:%M %p'), c.to_time.strftime('%m/%d/%Y %I:%M %p'))
         result.append(contest_dict)
     return result
 

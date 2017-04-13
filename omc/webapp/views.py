@@ -32,8 +32,8 @@ def contest_overview(request):
     if not contest.from_time or not contest.to_time:
         contest.time_string = None
     else:
-        contest.time_string = '%s - %s' % (str(contest.from_time),
-                                           str(contest.to_time))
+        contest.time_string = '%s - %s' % (contest.from_time.strftime(
+            '%m/%d/%Y %I:%M %p'), contest.to_time.strftime('%m/%d/%Y %I:%M %p'))
     template_data = {'contest': contest,
                      'can_participate': service.can_participate_contest(contest),
                      'can_manage': service.can_manage_contest(contest, request.user)}
@@ -72,3 +72,8 @@ def contests(request):
 @login_required
 def user(request):
     return render(request, 'users/user.html', {})
+
+
+@login_required
+def change_password(request):
+    return render(request, 'change_password.html', {})
