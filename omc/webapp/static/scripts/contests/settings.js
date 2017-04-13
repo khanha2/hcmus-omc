@@ -8,14 +8,8 @@ $(document).ready(function() {
     }
 
     function loadOverviewTab() {
-        $('#contest-from-time').datetimepicker({
-            format: "DD/MM/YYYY hh:mm",
-            use24hours: true
-        });
-        $('#contest-to-time').datetimepicker({
-            format: "DD/MM/YYYY hh:mm",
-            use24hours: true
-        });
+        $('#contest-from-time').datetimepicker({ format: "DD/MM/YYYY hh:mm A", });
+        $('#contest-to-time').datetimepicker({ format: "DD/MM/YYYY hh:mm A" });
 
         $('#contest-short-desc').summernote({ height: 150 });
         $('#contest-desc').summernote({ height: 150 });
