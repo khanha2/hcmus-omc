@@ -126,17 +126,16 @@ $(document).ready(function() {
                 'match_id': $(this).attr('data-id')
             },
             success: function(response) {
-                var data = response[0];
-                $('#modal-match-detail').find('.modal-title').html('Chi tiết bài làm của ' + data.contestant_name);
-                $('#contestant-choice-questions .general-item-list').empty();
-                $('#contestant-essay-questions .general-item-list').empty();
-                for (i = 0; i < data.mc_questions.length; ++i) {
-                    loadContestantMCQuestion(i + 1, data.mc_questions[i], data.mc_responses);
+                $('#modal-match-detail').find('.modal-title').html('Chi tiết bài làm của ' + response.contestant_name);
+                $('#match-mc-questions .general-item-list').empty();
+                $('#match-writing-questions .general-item-list').empty();
+                for (i = 0; i < response.mc_questions.length; ++i) {
+                    loadContestantMCQuestion(i + 1, response.mc_questions[i], response.mc_responses);
                 }
-                for (i = 0; i < data.writing_questions.length; ++i) {
-                    loadContestantWritingQuestion(i + 1, data.writing_questions[i], data.writing_responses);
+                for (i = 0; i < response.writing_questions.length; ++i) {
+                    loadContestantWritingQuestion(i + 1, response.writing_questions[i], response.writing_responses);
                 }
-                $('#modal-detail').modal('show');
+                $('#modal-match-detail').modal('show');
             },
             error: function(response, error) {},
         });
