@@ -91,14 +91,8 @@ $(document).ready(function() {
         if (typeof responseList[question.id] !== 'undefined') {
             response = responseList[question.id];
         }
-        var item = '<div class="item">' +
-            '<div class="item-body">' +
-            '<strong>Câu hỏi ' + index + '</strong>' +
-            '<p>' + question.content + '</p>' +
-            '<strong>Câu trả lời: </strong>' + response +
-            '</div>' +
-            '</div>';
-        $('#match-mc-questions').find('.general-item-list').append(item);
+        var item = '<div class="panel panel-default"><div class="panel-body"><strong>Câu hỏi ' + index + ':</strong><p>' + question.content + '</p>Câu trả lời: ' + response + '<br>Đáp án: <strong>' + question.answer + '</strong></div></div>';
+        $('#match-mc-questions').find('.panel-group').append(item);
     };
 
     function loadContestantWritingQuestion(index, question, responseList) {
@@ -106,14 +100,8 @@ $(document).ready(function() {
         if (typeof responseList[question.id] !== 'undefined') {
             response = responseList[question.id];
         }
-        var item = '<div class="item">' +
-            '<div class="item-body">' +
-            '<strong>Câu hỏi ' + index + '</strong>' +
-            '<p>' + question.content + '</p>' +
-            '<strong>Câu trả lời: </strong>' + response +
-            '</div>' +
-            '</div>';
-        $('#match-writing-questions').find('.general-item-list').append(item);
+        var item = '<div class="panel panel-default"><div class="panel-body"><strong>Câu hỏi ' + index + ':</strong><p>' + question.content + '</p>Câu trả lời: ' + response + '</div></div>';
+        $('#match-writing-questions').find('.panel-group').append(item);
     };
 
     $(document).on('click', '.btn-match-detail', function(e) {
@@ -127,8 +115,8 @@ $(document).ready(function() {
             },
             success: function(response) {
                 $('#modal-match-detail').find('.modal-title').html('Chi tiết bài làm của ' + response.contestant_name);
-                $('#match-mc-questions .general-item-list').empty();
-                $('#match-writing-questions .general-item-list').empty();
+                $('#match-mc-questions .panel-group').empty();
+                $('#match-writing-questions .panel-group').empty();
                 for (i = 0; i < response.mc_questions.length; ++i) {
                     loadContestantMCQuestion(i + 1, response.mc_questions[i], response.mc_responses);
                 }

@@ -1,0 +1,4 @@
+.panel-group.scroller {
+    overflow-y: scroll;
+    height: 240px;
+}

@@ -199,7 +199,7 @@ def match_detail(request):
     data['contestant_name'] = str(match.contestant.user)
     if not in_range(match.start_time, match.end_time, now):
         data['contest_time'] = (match.end_time - match.start_time).seconds
-        data['mc_questions'] = service.load_mc_questions(match)
+        data['mc_questions'] = service.load_mc_questions(match, True)
         data['writing_questions'] = service.load_writing_questions(match)
         data['mc_responses'] = json.loads(match.mc_responses)
         data['writing_responses'] = json.loads(match.writing_responses)

@@ -120,22 +120,18 @@ def generate_match(contest, user):
     return False
 
 
-def load_mc_questions(match):
+def load_mc_questions(match, get_answers=False):
     mc_question_ids = json.loads(match.mc_questions)
     result = []
     view_id = 1
     for i in mc_question_ids:
         try:
             question = MCQuestion.objects.get(id=i)
-            result.append({
-                'id': question.id,
-                'view_id': view_id,
-                'content': question.content,
-                'a': question.a,
-                'b': question.b,
-                'c': question.c,
-                'd': question.d,
-            })
+            d = {'id': question.id, 'view_id': view_id, 'content': question.content,
+                 'a': question.a, 'b': question.b, 'c': question.c, 'd': question.d}
+            if get_answers:
+                d['answer'] = question.answer
+            result.append(d)
             view_id += 1
         except:
             pass
