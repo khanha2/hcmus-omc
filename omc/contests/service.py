@@ -197,7 +197,7 @@ def submit_match(request, contest):
                     if param_name in request.POST:
                         value = request.POST[param_name].strip()
                         mc_responses[i] = value
-                        if value == question.answer:
+                        if value.upper() == question.answer.upper():
                             passed_questions += 1
                 match.mc_responses = json.dumps(mc_responses)
                 match.mc_passed_responses = passed_questions
