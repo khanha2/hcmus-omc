@@ -27,7 +27,7 @@ def convert_string_to_date(string):
 
 def convert_string_to_time(string):
     try:
-        return datetime.strptime(string, '%d/%m/%Y %I:%M %G')
+        return datetime.strptime(string, '%d/%m/%Y %I:%M %p')
     except Exception:
         pass
     return None

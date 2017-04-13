@@ -157,13 +157,13 @@ DATETIME_INPUT_FORMATS = (
     '%d/%m/%y %H:%M:%S.%f',
     '%d/%m/%y %H:%M',
     '%d/%m/%y',
-    '%d/%m/%y %I:%M %G',
-    '%d/%m/%Y %I:%M %G'
+    '%d/%m/%y %I:%M %p',
+    '%d/%m/%Y %I:%M %p'
 )
 
 DATE_FORMAT = 'd/m/Y'
 
-DATETIME_FORMAT = 'd/m/Y g:i P'
+DATETIME_FORMAT = 'd/m/Y g:i p'
 
 # Mailbox information
 EMAIL_USE_TLS = True
