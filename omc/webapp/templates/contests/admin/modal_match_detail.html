@@ -17,11 +17,11 @@
                 </ul>
                 {% endif %}
                 <div class="tab-content" style="height: 260px;">
-                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade in active"{% endif %} id="match-mc-questions">
-                        <div class="general-item-list scroller" style="height: 240px;"></div>
+                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade in active" {% endif %} id="match-mc-questions">
+                        <div class="panel-group scroller"></div>
                     </div>
-                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade"{% endif %} id="match-writing-questions">
-                        <div class="general-item-list scroller" style="height: 240px;"></div>
+                    <div {% if contest.use_mc_test and contest.use_writing_test %}class="tab-pane fade" {% endif %} id="match-writing-questions">
+                        <div class="panel-group scroller"></div>
                     </div>
                 </div>
             </div>
