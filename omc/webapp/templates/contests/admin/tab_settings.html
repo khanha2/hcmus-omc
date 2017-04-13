@@ -10,12 +10,15 @@
                 <li class="active"><a data-toggle="tab" href="#tab-oveview">Thông tin chung</a></li>
                 <li><a data-toggle="tab" href="#tab-mc-test">Phần thi trắc nghiệm</a></li>
                 <li><a data-toggle="tab" href="#tab-writing-test">Phần thi tự luận</a></li>
-                <li><a data-toggle="tab" href="#tab-writing-test">Xóa cuộc thi</a></li>
+                <li><a data-toggle="tab" href="#tab-delete">Xóa cuộc thi</a></li>
             </ul>
         </div>
         <div class="col-lg-10 col-md-9 col-sm-8">
             <div class="tab-content">
-                {% include 'contests/admin/subtab_overview.html' %} {% include 'contests/admin/subtab_mc_test.html' %} {% include 'contests/admin/subtab_writing_test.html' %}
+                {% include 'contests/admin/subtab_overview.html' %}
+                {% include 'contests/admin/subtab_mc_test.html' %}
+                {% include 'contests/admin/subtab_writing_test.html' %}
+                {% include 'contests/admin/subtab_delete.html' %}
             </div>
         </div>
     </div>
