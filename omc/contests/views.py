@@ -194,6 +194,7 @@ def export_results(request):
 def match_detail(request):
     contest = service.get_contest_from_request(request, True)
     match = get_object_or_404(Match, pk=request.GET.get('match_id'))
+    now = timezone.now()
     data = {}
     data['contestant_name'] = str(match.contestant.user)
     if not in_range(match.start_time, match.end_time, now):
