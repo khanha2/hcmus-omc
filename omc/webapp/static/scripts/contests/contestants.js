@@ -86,31 +86,61 @@ $(document).ready(function() {
         });
     }
 
-    // $(document).on('click', '.btn-match-detail', function(event) {
-    //     event.preventDefault();
-    //     $.ajax({
-    //         url: matchDetailUrl,
-    //         type: 'GET',
-    //         data: {
-    //             'id': contestId,
-    //             'match_id': $(this).attr('data-id')
-    //         },
-    //         success: function(response) {
-    //             var data = response[0];
-    //             $('#modal-match-detail').find('.modal-title').html('Chi tiết bài làm của ' + data.user_fullname);
-    //             $('#contestant-choice-questions .general-item-list').empty();
-    //             $('#contestant-essay-questions .general-item-list').empty();
-    //             for (i = 0; i < data.choice_questions.length; ++i) {
-    //                 loadContestantChoiceQuestion(i + 1, data.choice_questions[i], data.choice_answers);
-    //             }
-    //             for (i = 0; i < data.essay_questions.length; ++i) {
-    //                 loadContestantEssayQuestion(i + 1, data.essay_questions[i], data.essay_answers);
-    //             }
-    //             $('#modal-detail').modal('show');
-    //         },
-    //         error: function(response, error) {},
-    //     });
-    // });
+    function loadContestantMCQuestion(index, question, responseList) {
+        var response = '';
+        if (typeof responseList[question.id] !== 'undefined') {
+            response = responseList[question.id];
+        }
+        var item = '<div class="item">' +
+            '<div class="item-body">' +
+            '<strong>Câu hỏi ' + index + '</strong>' +
+            '<p>' + question.content + '</p>' +
+            '<strong>Câu trả lời: </strong>' + response +
+            '</div>' +
+            '</div>';
+        $('#match-mc-questions').find('.general-item-list').append(item);
+    };
+
+    function loadContestantWritingQuestion(index, question, responseList) {
+        var response = '';
+        if (typeof responseList[question.id] !== 'undefined') {
+            response = responseList[question.id];
+        }
+        var item = '<div class="item">' +
+            '<div class="item-body">' +
+            '<strong>Câu hỏi ' + index + '</strong>' +
+            '<p>' + question.content + '</p>' +
+            '<strong>Câu trả lời: </strong>' + response +
+            '</div>' +
+            '</div>';
+        $('#match-writing-questions').find('.general-item-list').append(item);
+    };
+
+    $(document).on('click', '.btn-match-detail', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: matchDetailUrl,
+            type: 'GET',
+            data: {
+                'id': contestId,
+                'match_id': $(this).attr('data-id')
+            },
+            success: function(response) {
+                var data = response[0];
+                $('#modal-match-detail').find('.modal-title').html('Chi tiết bài làm của ' + data.contestant_name);
+                $('#contestant-choice-questions .general-item-list').empty();
+                $('#contestant-essay-questions .general-item-list').empty();
+                for (i = 0; i < data.mc_questions.length; ++i) {
+                    loadContestantMCQuestion(i + 1, data.mc_questions[i], data.mc_responses);
+                }
+                for (i = 0; i < data.writing_questions.length; ++i) {
+                    loadContestantWritingQuestion(i + 1, data.writing_questions[i], data.writing_responses);
+                }
+                $('#modal-detail').modal('show');
+            },
+            error: function(response, error) {},
+        });
+    });
 
     loadTable(1);
 });

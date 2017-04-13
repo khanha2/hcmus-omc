@@ -195,7 +195,15 @@ def match_detail(request):
     contest = service.get_contest_from_request(request, True)
     match = get_object_or_404(Match, pk=request.GET.get('match_id'))
     data = {}
-
+    data['contestant_name'] = str(match.contestant.user)
+    if not in_range(match.start_time, match.end_time, now):
+        data['contest_time'] = (match.end_time - match.start_time).seconds
+        data['mc_questions'] = service.load_mc_questions(match)
+        data['writing_questions'] = service.load_essay_questions(match)
+        data['mc_responses'] = json.loads(match.mc_responses)
+        data['writing_responses'] = json.loads(match.writing_responses)
+    else:
+        data['doing'] = True
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
