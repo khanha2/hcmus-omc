@@ -175,10 +175,19 @@ $(document).ready(function() {
         });
     }
 
-    function loadContestants() {
-
+    function deleteContest() {
+        $.ajax({
+            url: deleteUrl,
+            type: 'GET',
+            data: { id: contestId },
+            success: function(response) {
+                if (response.success) {
+                    window.location.href = managementUrl;
+                }
+            }
+        });
     }
-    
+
     $('#btn-update-overview').on('click', function(e) {
         e.preventDefault();
         updateOverviewInfo();
@@ -202,6 +211,11 @@ $(document).ready(function() {
     $('#btn-update-writingtest').on('click', function(e) {
         e.preventDefault();
         updateWritingTestSettings();
+    });
+
+    $('#btn-delete').on('click', function(e) {
+        e.preventDefault();
+        deleteContest();
     });
 
     loadOverviewTab();

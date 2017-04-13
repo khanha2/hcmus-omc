@@ -218,3 +218,11 @@ def match_results(request):
         }
         result.append(t)
     return HttpResponse(json.dumps(result), content_type='application/json')
+
+
+@login_required
+def delete(request):
+    contest = service.get_contest_from_request(request, True)
+    contest.delete()
+    result = {'success': True}
+    return HttpResponse(json.dumps(result), content_type='application/json')
