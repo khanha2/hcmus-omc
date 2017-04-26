@@ -23,6 +23,7 @@ def change_password(request):
     if request.method == 'POST':
         change_form = PasswordChangeForm(request, request.POST)
         if change_form.is_valid():
-            form.save()
+            request.user.set_password(request.POST['new_password1'])
+            request.user.save()
             data['success'] = True
     return HttpResponse(json.dumps(data), content_type='application/json')
