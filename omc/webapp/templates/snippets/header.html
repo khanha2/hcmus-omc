@@ -18,7 +18,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ user }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <!-- <li><a href="{% url 'webapp:user' %}">Thông tin tài khoản</a></li> -->
-                        <!-- <li><a href="#">Đổi mật khẩu</a></li> -->
+                        <li><a href="{% url 'webapp:change_password' %}">Đổi mật khẩu</a></li>
                         <li><a href="{% url 'webapp:logout' %}">Đăng xuất</a></li>
                     </ul>
                 </li>

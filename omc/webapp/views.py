@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404, render, reverse
 
 from contests.models import Contest, Contestant
 from contests import service
-# Create your views here.
 
 
 def index(request):
