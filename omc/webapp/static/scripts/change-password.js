@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     $('.form-control').on('keypress', function(e) {
         if (e.which == 13) {
-            login();
+            changePassword();
         }
     });
 
