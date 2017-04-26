@@ -29,7 +29,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    windows.location.href = '/';
+                    window.location.href = '/';
                 } else {
                     showMessage('Không thể đổi mật khẩu.');
                 }
