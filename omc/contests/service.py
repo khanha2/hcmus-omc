@@ -11,6 +11,17 @@ from common.utilities import get_paginated_list, in_range
 from contests.models import Contest, ContestManager, Contestant, MCQuestion, WritingQuestion, Match
 
 
+def _get_contest_package(contest):
+    return {
+        'id': contest.id,
+        'name': contest.name,
+        'short_description': contest.short_description,
+        'time_string': '%s - %s' % (contest.from_time.strftime('%d/%m/%Y %H:%M'),
+                                    contest.to_time.strftime('%d/%m/%Y %H:%M'))
+        if contest.from_time and contest.to_time else None
+    }
+
+
 def contests(search_criteria=None):
     if search_criteria and 'management' in search_criteria and 'user' in search_criteria:
         contest_objects = [cm.contest for cm in ContestManager.objects.filter(
@@ -18,18 +29,7 @@ def contests(search_criteria=None):
     else:
         contest_objects = Contest.objects.filter(is_deleted=False)
     contest_objects = contest_objects.order_by('-from_time')
-    result = []
-    for c in contest_objects:
-        contest_dict = {}
-        contest_dict['id'] = c.id
-        contest_dict['name'] = c.name
-        contest_dict['short_description'] = c.short_description
-        if not c.from_time or not c.to_time:
-            contest_dict['time_string'] = None
-        else:
-            contest_dict[
-                'time_string'] = '%s - %s' % (c.from_time.strftime('%m/%d/%Y %I:%M %p'), c.to_time.strftime('%m/%d/%Y %I:%M %p'))
-        result.append(contest_dict)
+    result = [_get_contest_package(c) for c in contest_objects]
     return result
 
 
@@ -67,7 +67,7 @@ def remaining_matches(contest, user):
     if contestant.count() == 0:
         return contest.maximum_of_matches
     remaining_matches = contest.maximum_of_matches - \
-        Match.objects.filter(contestant=contestant).count()
+                        Match.objects.filter(contestant=contestant).count()
     return remaining_matches if remaining_matches > 0 else 0
 
 
@@ -114,7 +114,7 @@ def generate_match(contest, user):
             now = timezone.now()
             match.start_time = now
             match.end_time = now + \
-                timedelta(minutes=contest.contest_time)
+                             timedelta(minutes=contest.contest_time)
             match.save()
         return True
     return False
